@@ -20,7 +20,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from ttkbootstrap import Style
 
-GITHUB_TOKEN = "[REDACTED]zDP4ZX5nI5z0K0Uejx8bU2AIswUc9M4AC1QU"
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_USER = "fsmfile"
 GITHUB_REPO = "elevesystem"
 GITHUB_BRANCH = "main"
@@ -116,6 +116,9 @@ def criar_atalho(frontend_path: Path, nome_atalho: str):
 
 
 def upload_json_para_github(filename: str, data: dict):
+    if not GITHUB_TOKEN:
+        raise Exception("Token do GitHub não encontrado. Defina a variável de ambiente 'GITHUB_TOKEN'.")
+
     url = f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/contents/configs/{filename}"
     conteudo = json.dumps(data, indent=2, ensure_ascii=False)
     payload = json.dumps({
@@ -126,9 +129,17 @@ def upload_json_para_github(filename: str, data: dict):
     req = urllib.request.Request(url, data=payload.encode(), method="PUT")
     req.add_header("Authorization", f"token {GITHUB_TOKEN}")
     req.add_header("Content-Type", "application/json")
-    with urllib.request.urlopen(req) as resp:
-        if resp.status not in (200, 201):
-            raise Exception(f"Erro ao salvar no GitHub: {resp.status}")
+    try:
+        with urllib.request.urlopen(req) as resp:
+            if resp.status not in (200, 201):
+                raise Exception(f"Erro ao salvar no GitHub: {resp.status}")
+    except urllib.error.HTTPError as e:
+        raise Exception(f"Erro ao salvar no GitHub (HTTP {e.code}): {e.reason}")
+    except urllib.error.URLError as e:
+        raise Exception("Falha de conexão ao tentar salvar no GitHub.")
+    except Exception as e:
+        raise Exception(f"Erro inesperado ao salvar JSON: {e}")
+
 
 def abrir_modo_dev(root):
     dev_win = tk.Toplevel(root)
