@@ -1,0 +1,11 @@
+{
+  "CLIENT_ID": "TESTEEEEEE",
+  "INSTALL_DIR": "C:\\FLMSistemas",
+  "BACKEND_NAME": "FLMSistemas_be.accdb",
+  "FRONTEND_NAME": "FLMSistemas_automacao.accdr",
+  "BACKEND_URL": "",
+  "FRONTEND_URL": "https://github.com/fsmfile/elevesystem/raw/main/FrontEnd/FLMSistemas_automacao.accdr",
+  "DB_PASSWORD": "Ca486575@",
+  "CARÊNCIA_DIAS": "10",
+  "SHORTCUT_NAME": "Eleve System.lnk"
+}
