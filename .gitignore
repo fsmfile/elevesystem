@@ -1,0 +1,14 @@
+# --- Arquivos que SEMPRE devem ser versionados
+!.gitignore
+!.gitattributes
+
+# --- Pastas a ignorar
+/Access/
+/build/
+/dist/
+/venv/
+/__pycache__/
+
+# --- Arquivos a ignorar
+*.mdb
+*.accdb

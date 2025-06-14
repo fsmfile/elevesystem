@@ -1,0 +1,4 @@
+pyodbc
+wmi                    # Para pegar Serial da BIOS
+gspread                # Só usado se existir service_account.json
+google-auth
