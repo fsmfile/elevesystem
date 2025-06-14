@@ -1,153 +1,180 @@
-"""Eleve System – Installer EXE (One‑Click)
--------------------------------------------------
-Este script deve ser compilado com PyInstaller (--onefile --noconsole)
-antes de ser enviado ao cliente. 100 % automatizado, sem prompts.
+r"""Eleve System – Installer com ID remoto (via GitHub)
+------------------------------------------------------------
+Compile:
+    pyinstaller --onefile --noconsole --icon=ico/setup.ico installer_elevesystem.py
 
-FUNCIONALIDADES:
-• Cria/valida Trusted Location para Access (Office 2010 – Office 365)
-• (Opcional) Faz download do backend e frontend se não existirem
-• Cria/atualiza tabela tblLicencaLocal no backend
-• Cria atalho profissional do front‑end no desktop do usuário
-• Roda de forma idempotente – pode ser executado várias vezes sem erro
+Recursos:
+• Ao abrir, o usuário informa um ID único (ex: LPP001)
+• O instalador busca as configurações desse ID em um JSON remoto (GitHub)
+• Ex: https://raw.githubusercontent.com/fsmfile/elevesystem/main/configs/LPP001.json
+• Com base nisso, realiza toda a instalação automaticamente
+• Nenhum registro local usado, nem arquivos externos
+• Progresso visível, ícone personalizado, atalho criado com mesmo ícone
 """
-from __future__ import annotations
-import os, sys, datetime as dt, subprocess, urllib.request, shutil
-import winreg as reg
-import pyodbc, ctypes
-from uuid import uuid4
+
+import os, sys, json, datetime as dt, urllib.request, shutil
+import pyodbc
 from pathlib import Path
+from uuid import uuid4
+from threading import Thread
+import tkinter as tk
+from tkinter import ttk, messagebox, simpledialog
 
-# === CONFIGURADO PELO DESENVOLVEDOR (EDITAR ANTES DE COMPILAR) ===
-CLIENT_ID          = "LPPNEUS"                              # ← ID da loja
-INSTALL_DIR        = Path(r"C:\FLMSistemas")               # ← pasta padrão
-BACKEND_NAME       = "FLMSistemas_be.accdb"                 # ← backend file
-FRONTEND_NAME      = "FLMSistemas_automacao.accdr"          # ← frontend file
-DB_PASSWORD        = "Ca486575@"                            # ← senha do BE
-BACKEND_DOWNLOAD_URL  = ""   # opcional .accdr num link direto (https)
-FRONTEND_DOWNLOAD_URL = ""   # opcional .accdr num link direto (https)
+ICON_PATH = Path(__file__).parent / "ico" / "setup.ico"  # ícone profissional na pasta /ico
+CONFIG_URL_BASE = "https://raw.githubusercontent.com/fsmfile/elevesystem/main/configs/"
 
-CARENCIA_DIAS      = 10  # dias de tolerância offline
-SHORTCUT_NAME      = "Eleve System.lnk"
-ICON_PATH          = str(Path(sys.executable).with_suffix('.ico'))  # pode trocar
-
-# =================================================================
-
-INSTALL_DIR.mkdir(parents=True, exist_ok=True)
-BACKEND_PATH  = INSTALL_DIR / BACKEND_NAME
-FRONTEND_PATH = INSTALL_DIR / FRONTEND_NAME
-
-# ------- util -----------------------------------------------------------------
-
-def download_if_missing(url: str, dest: Path):
-    if url and not dest.exists():
-        try:
-            print(f"• Baixando {dest.name}...")
-            with urllib.request.urlopen(url) as r, open(dest, 'wb') as f:
-                shutil.copyfileobj(r, f)
-        except Exception as e:
-            print(f"! Falha no download: {e}")
-
-# ---- Trusted Location ---------------------------------------------------------
-
-def add_trusted_location(path: Path):
-    office_versions = ["16.0", "15.0", "14.0"]
-    for ver in office_versions:
-        for root in (reg.HKEY_CURRENT_USER, reg.HKEY_LOCAL_MACHINE):
-            key_base = fr"Software\Microsoft\Office\{ver}\Access\Security\Trusted Locations"
-            try:
-                with reg.CreateKeyEx(root, key_base + r"\EleveSystem", 0, reg.KEY_WRITE) as k:
-                    reg.SetValueEx(k, "Path", 0, reg.REG_SZ, str(path) + "\\")
-                    reg.SetValueEx(k, "AllowSubfolders", 0, reg.REG_DWORD, 1)
-            except PermissionError:
-                pass  # sem privilégio – HKCU já deve bastar
-
-# ---- Shortcut -----------------------------------------------------------------
-
-def create_shortcut(target: Path, shortcut_name: str, icon: str | None = None):
+# ----------------- Baixar configuração via ID -----------------
+def baixar_config_por_id(cliente_id: str) -> dict:
+    url = f"{CONFIG_URL_BASE}{cliente_id}.json"
     try:
-        import win32com.client  # pywin32
-    except ImportError:
-        print("! pywin32 não disponível: pulando criação de atalho")
+        with urllib.request.urlopen(url) as resp:
+            return json.load(resp)
+    except Exception as e:
+        raise RuntimeError(f"Não foi possível carregar a configuração para o ID '{cliente_id}': {e}")
+
+# ----------------- Trusted Location -----------------
+def add_trusted_location(path: Path):
+    import winreg as reg
+    for ver in ("16.0", "15.0", "14.0"):
+        key = fr"Software\\Microsoft\\Office\\{ver}\\Access\\Security\\Trusted Locations\\EleveSystem"
+        try:
+            with reg.CreateKey(reg.HKEY_CURRENT_USER, key) as k:
+                reg.SetValueEx(k, "Path", 0, reg.REG_SZ, str(path) + "\\")
+                reg.SetValueEx(k, "AllowSubfolders", 0, reg.REG_DWORD, 1)
+        except:
+            pass
+
+# ----------------- Download com progresso -----------------
+def download_with_progress(url: str, dest: Path, label: tk.Label):
+    if not url or dest.exists():
         return
-    desktop = Path(os.path.join(os.environ["USERPROFILE"], "Desktop"))
-    lnk_path = desktop / shortcut_name
-    shell = win32com.client.Dispatch("WScript.Shell")
-    shortcut = shell.CreateShortCut(str(lnk_path))
-    shortcut.Targetpath = str(target)
-    shortcut.WorkingDirectory = str(target.parent)
-    if icon and Path(icon).exists():
-        shortcut.IconLocation = icon
-    shortcut.save()
+    try:
+        with urllib.request.urlopen(url) as resp:
+            total = int(resp.getheader('Content-Length') or 0)
+            downloaded = 0
+            block = 8192
+            with open(dest, 'wb') as f:
+                while True:
+                    chunk = resp.read(block)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+                    downloaded += len(chunk)
+                    if total:
+                        pct = int(downloaded * 100 / total)
+                        label.config(text=f"Baixando {dest.name}: {pct}%")
+    except Exception as err:
+        label.config(fg='red', text=f"❌ Erro ao baixar {dest.name}: {err}")
+        raise
 
-# ---- Access -------------------------------------------------------------------
-
-def connect_access(db_path: Path):
-    conn_str = (
-        r"Driver={Microsoft Access Driver (*.mdb, *.accdb)};"  # ODBC padrão
-        fr"DBQ={db_path};"
-        r"Uid=Admin;"
-        fr"Pwd={DB_PASSWORD};"
-    )
+# ----------------- Access e licença -----------------
+def connect_access(db_path: Path, senha: str):
+    conn_str = f"Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={db_path};Uid=Admin;Pwd={senha};"
     return pyodbc.connect(conn_str, autocommit=True)
 
-
-def ensure_tbl_licenca(conn):
+def garantir_tabela_licenca(conn):
     cur = conn.cursor()
     try:
         cur.execute("SELECT TOP 1 * FROM tblLicencaLocal")
-    except pyodbc.Error:
-        cur.execute("""
-            CREATE TABLE tblLicencaLocal (
-                ClienteID     TEXT(100),
-                HardwareID    TEXT(100),
-                UltimaDataOk  DATETIME
-            );""")
+    except:
+        cur.execute("CREATE TABLE tblLicencaLocal (ClienteID TEXT(100), HardwareID TEXT(100), UltimaDataOk DATETIME);")
     cur.close()
 
-
-def upsert_licenca(conn):
-    hw_id = uuid4().hex  # hardware ID simplificado; pode usar WMI se preferir
+def gravar_licenca(conn, cliente_id: str, dias_tolerancia: int):
     cur = conn.cursor()
     cur.execute("DELETE FROM tblLicencaLocal;")
-    cur.execute("""
-        INSERT INTO tblLicencaLocal (ClienteID, HardwareID, UltimaDataOk)
-        VALUES (?,?,?);""", (CLIENT_ID, hw_id, dt.datetime.now() - dt.timedelta(days=CARENCIA_DIAS)))
+    cur.execute("INSERT INTO tblLicencaLocal VALUES (?,?,?);", (
+        cliente_id, uuid4().hex, dt.datetime.now() - dt.timedelta(days=dias_tolerancia)))
     cur.close()
 
-# ---- main ---------------------------------------------------------------------
-
-def main():
-    print("\n== Eleve System – Installer ==\n")
-
-    # 1. arquivos necessários
-    download_if_missing(BACKEND_DOWNLOAD_URL, BACKEND_PATH)
-    download_if_missing(FRONTEND_DOWNLOAD_URL, FRONTEND_PATH)
-
-    if not BACKEND_PATH.exists():
-        sys.exit(f"Backend {BACKEND_PATH} não encontrado.")
-
-    # 2. Trusted Location
-    add_trusted_location(INSTALL_DIR)
-    print("• Trusted Location verificada ✅")
-
-    # 3. Tabela de licença
+# ----------------- Atalho Desktop -----------------
+def criar_atalho(frontend_path: Path, nome_atalho: str):
     try:
-        conn = connect_access(BACKEND_PATH)
-        ensure_tbl_licenca(conn)
-        upsert_licenca(conn)
+        import win32com.client
+    except ImportError:
+        return
+    desktop = Path(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
+    atalho = desktop / nome_atalho
+    shell = win32com.client.Dispatch('WScript.Shell')
+    lnk = shell.CreateShortCut(str(atalho))
+    lnk.Targetpath = str(frontend_path)
+    lnk.WorkingDirectory = str(frontend_path.parent)
+    if ICON_PATH.exists():
+        lnk.IconLocation = str(ICON_PATH)
+    lnk.save()
+
+# ----------------- Instalação principal -----------------
+def instalar(config: dict, label: tk.Label, btn: ttk.Button):
+    try:
+        btn.config(state='disabled')
+        pasta = Path(config['INSTALL_DIR'])
+        pasta.mkdir(parents=True, exist_ok=True)
+
+        be = pasta / config['BACKEND_NAME']
+        fe = pasta / config['FRONTEND_NAME']
+
+        download_with_progress(config['BACKEND_URL'], be, label)
+        download_with_progress(config['FRONTEND_URL'], fe, label)
+
+        if not be.exists():
+            raise FileNotFoundError(f"Backend não encontrado: {be}")
+
+        label.config(text='Registrando local confiável...')
+        add_trusted_location(pasta)
+
+        label.config(text='Gravando licença...')
+        conn = connect_access(be, config['DB_PASSWORD'])
+        garantir_tabela_licenca(conn)
+        gravar_licenca(conn, config['CLIENT_ID'], int(config['CARÊNCIA_DIAS']))
         conn.close()
-        print("• Licença local atualizada ✅")
-    except pyodbc.Error as e:
-        print(f"! Erro no ODBC: {e}")
 
-    # 4. Atalho
-    create_shortcut(FRONTEND_PATH, SHORTCUT_NAME, ICON_PATH)
-    print("• Atalho criado/atualizado ✅")
+        label.config(text='Criando atalho...')
+        criar_atalho(fe, config['SHORTCUT_NAME'])
 
-    ctypes.windll.user32.MessageBoxW(None, "Instalação concluída!", "Eleve System", 64)
+        label.config(fg='green', text='✅ Instalação concluída com sucesso!')
 
-if __name__ == "__main__":
-    try:
-        main()
     except Exception as e:
-        ctypes.windll.user32.MessageBoxW(None, str(e), "Eleve System – Erro", 16)
+        label.config(fg='red', text=f"❌ Erro: {e}")
+    finally:
+        btn.config(state='normal')
+
+# ----------------- UI Principal -----------------
+def main_gui():
+    root = tk.Tk()
+    root.title("Eleve System – Instalador via ID")
+    root.geometry("560x300")
+    if ICON_PATH.exists():
+        try:
+            root.iconbitmap(str(ICON_PATH))
+        except:
+            pass
+
+    frame = ttk.Frame(root, padding=20)
+    frame.pack(fill='both', expand=True)
+
+    ttk.Label(frame, text="Digite o ID do cliente para iniciar a instalação:", font=('Segoe UI', 11)).pack(pady=(0, 10))
+    entrada_id = ttk.Entry(frame, font=('Segoe UI', 12))
+    entrada_id.pack(ipady=4)
+
+    progresso = tk.Label(frame, text='', font=('Segoe UI', 10))
+    progresso.pack(pady=10)
+
+    botao_instalar = ttk.Button(frame, text='Buscar Configuração e Instalar')
+    botao_instalar.pack(ipady=4, pady=(10, 0))
+
+    def ao_clicar():
+        cliente_id = entrada_id.get().strip()
+        if not cliente_id:
+            messagebox.showerror("Erro", "Por favor, informe um ID válido.")
+            return
+        try:
+            config = baixar_config_por_id(cliente_id)
+            instalar(config, progresso, botao_instalar)
+        except Exception as e:
+            progresso.config(fg='red', text=f"Erro: {e}")
+
+    botao_instalar.config(command=ao_clicar)
+    root.mainloop()
+
+if __name__ == '__main__':
+    main_gui()
