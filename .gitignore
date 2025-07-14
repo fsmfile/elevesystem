@@ -12,3 +12,8 @@
 # --- Arquivos a ignorar
 *.mdb
 *.accdb
+
+# --- Arquivos sensíveis com tokens/chaves (NÃO versionar)
+.env
+token_github.txt
+token_noexpire_publicrepo.txt

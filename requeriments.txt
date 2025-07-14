@@ -5,3 +5,4 @@ google-auth
 win32com
 requests
 ttkbootstrap
+python-dotenv          # Para carregar variáveis de ambiente do arquivo .env

@@ -7,10 +7,17 @@ Script para fazer upload do arquivo AURELIOPNEUS.json para o GitHub
 import json
 import urllib.request
 import base64
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
-# Token fornecido pelo usuário
-TOKEN = "[REDACTED]ZECof0HKo0mREzstUwdJp4ytXlIPNa30SWjj"
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
+
+# Token carregado do arquivo .env
+TOKEN = os.getenv("GITHUB_TOKEN")
+if not TOKEN:
+    raise ValueError("GITHUB_TOKEN não encontrado! Verifique se o arquivo .env existe e contém o token.")
 GITHUB_USER = "fsmfile"
 GITHUB_REPO = "elevesystem"
 GITHUB_BRANCH = "main"

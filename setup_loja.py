@@ -19,12 +19,14 @@ from uuid import uuid4
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from ttkbootstrap import Style
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-# Fallback: se não encontrar na variável de ambiente, usa o token conhecido
 if not GITHUB_TOKEN:
-    # Token configurado manualmente (pode ser removido após reiniciar o sistema)
-    GITHUB_TOKEN = "[REDACTED]ZECof0HKo0mREzstUwdJp4ytXlIPNa30SWjj"
+    raise ValueError("GITHUB_TOKEN não encontrado! Verifique se o arquivo .env existe e contém o token.")
 GITHUB_USER = "fsmfile"
 GITHUB_REPO = "elevesystem"
 GITHUB_BRANCH = "main"
