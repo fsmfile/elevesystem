@@ -258,6 +258,7 @@ def upload_json_para_github(filename: str, data: dict):
     req = urllib.request.Request(url, data=payload.encode(), method="PUT")
     req.add_header("Authorization", f"token {GITHUB_TOKEN}")
     req.add_header("Content-Type", "application/json")
+    req.add_header("User-Agent", "EleveSystem-Installer/1.0")
     try:
         with urllib.request.urlopen(req) as resp:
             if resp.status not in (200, 201):
