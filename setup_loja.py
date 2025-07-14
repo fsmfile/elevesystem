@@ -7,6 +7,7 @@ Recursos:
 • Usuário digita o SERIAL (nome do arquivo JSON)
 • O instalador baixa as configurações a partir do JSON
 • O valor salvo no backend é o "CLIENT_ID" de dentro do JSON
+• Controle de serial único - cada serial só pode ser usado uma vez
 • Modo Dev ativado com Ctrl+Shift+C e senha 4865753:
     - Permite criar novo JSON com formulário (Serial + campos de configuração)
     - Salva automaticamente em https://github.com/fsmfile/elevesystem/configs/
@@ -31,8 +32,77 @@ GITHUB_USER = "fsmfile"
 GITHUB_REPO = "elevesystem"
 GITHUB_BRANCH = "main"
 CONFIG_URL_BASE = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{GITHUB_BRANCH}/configs/"
+USED_SERIALS_URL_BASE = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{GITHUB_BRANCH}/used_serials/"
 
 ICON_PATH = Path(__file__).parent / "ico" / "setup.ico"
+
+def verificar_serial_usado(serial: str) -> bool:
+    """Verifica se o serial já foi utilizado"""
+    serial = serial.strip().upper()
+    url = f"{USED_SERIALS_URL_BASE}{serial}.json"
+    try:
+        with urllib.request.urlopen(url) as resp:
+            if resp.status == 200:
+                return True  # Serial já foi usado
+            return False
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return False  # Serial não foi usado ainda
+        raise Exception(f"Erro ao verificar serial: {e.code}")
+    except urllib.error.URLError as e:
+        raise Exception("Falha de conexão ao verificar serial. Verifique sua internet.")
+    except Exception as e:
+        raise Exception(f"Erro inesperado ao verificar serial: {e}")
+
+def marcar_serial_como_usado(serial: str):
+    """Marca o serial como usado criando um arquivo JSON no GitHub"""
+    if not GITHUB_TOKEN:
+        # Salva localmente como alternativa
+        used_serials_dir = Path(__file__).parent / "used_serials"
+        used_serials_dir.mkdir(exist_ok=True)
+        
+        local_file = used_serials_dir / f"{serial}.json"
+        with open(local_file, 'w', encoding='utf-8') as f:
+            json.dump({
+                "serial": serial,
+                "data_uso": dt.datetime.now().isoformat(),
+                "usado_por": "instalador_local"
+            }, f, indent=2, ensure_ascii=False)
+        
+        print(f"⚠️ Serial marcado como usado localmente em: {local_file}")
+        return
+
+    serial = serial.strip().upper()
+    url = f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/contents/used_serials/{serial}.json"
+    
+    dados_uso = {
+        "serial": serial,
+        "data_uso": dt.datetime.now().isoformat(),
+        "usado_por": "instalador_oficial"
+    }
+    
+    conteudo = json.dumps(dados_uso, indent=2, ensure_ascii=False)
+    payload = json.dumps({
+        "message": f"Serial {serial} marcado como usado",
+        "content": base64.b64encode(conteudo.encode()).decode(),
+        "branch": GITHUB_BRANCH
+    })
+    
+    req = urllib.request.Request(url, data=payload.encode(), method="PUT")
+    req.add_header("Authorization", f"token {GITHUB_TOKEN}")
+    req.add_header("Content-Type", "application/json")
+    req.add_header("User-Agent", "EleveSystem-Installer/1.0")
+    
+    try:
+        with urllib.request.urlopen(req) as resp:
+            if resp.status not in (200, 201):
+                raise Exception(f"Erro ao marcar serial como usado: {resp.status}")
+    except urllib.error.HTTPError as e:
+        raise Exception(f"Erro ao marcar serial como usado (HTTP {e.code}): {e.reason}")
+    except urllib.error.URLError as e:
+        raise Exception("Falha de conexão ao marcar serial como usado.")
+    except Exception as e:
+        raise Exception(f"Erro inesperado ao marcar serial como usado: {e}")
 
 def baixar_config_por_serial(serial: str) -> dict:
     serial = serial.strip().upper()  # Garante maiúsculo e sem espaços
@@ -60,8 +130,8 @@ def add_trusted_location(path: Path):
         except:
             pass
 
-def download_with_progress(url: str, dest: Path, label: tk.Label):
-    if not url or dest.exists(): return
+def download_with_progress(url: str, dest: Path, label: tk.Label, force: bool = False):
+    if not url or (dest.exists() and not force): return
     with urllib.request.urlopen(url) as resp:
         total = int(resp.getheader('Content-Length') or 0)
         downloaded = 0
@@ -336,8 +406,8 @@ def abrir_modo_dev(root):
 
     ttk.Button(dev_win, text="Salvar no GitHub", command=salvar).pack(pady=15)
 
-...
-def instalar(config: dict, label: tk.Label, btn: ttk.Button):
+
+def instalar(config: dict, label: tk.Label, btn: ttk.Button, serial: str):
     try:
         btn.config(state='disabled')
         pasta = Path(config['INSTALL_DIR'])
@@ -353,11 +423,13 @@ def instalar(config: dict, label: tk.Label, btn: ttk.Button):
         else:
             progresso.append("✔ Backend já presente")
 
-        if not fe.exists():
-            download_with_progress(config['FRONTEND_URL'], fe, label)
-            progresso.append("✔ Frontend instalado")
-        else:
-            progresso.append("✔ Frontend já presente")
+        # Frontend sempre substitui (força atualização)
+        if fe.exists():
+            progresso.append("🔄 Substituindo frontend existente...")
+            label.config(text="\n".join(progresso))
+            label.update()
+        download_with_progress(config['FRONTEND_URL'], fe, label, force=True)
+        progresso.append("✔ Frontend instalado/atualizado")
 
         add_trusted_location(pasta)
         progresso.append("✔ Local confiável configurado")
@@ -395,6 +467,17 @@ def instalar(config: dict, label: tk.Label, btn: ttk.Button):
             progresso.append("⚠️ Atalho não criado (sem permissão)")
             progresso.append(f"   Execute: {fe}")
 
+        # Marca o serial como usado após instalação bem-sucedida
+        try:
+            progresso.append("🔒 Marcando serial como usado...")
+            label.config(text="\n".join(progresso))
+            label.update()
+            marcar_serial_como_usado(serial)
+            progresso.append("✔ Serial marcado como usado")
+        except Exception as e:
+            # Não falha a instalação se não conseguir marcar o serial
+            progresso.append(f"⚠️ Aviso: Não foi possível marcar o serial como usado: {e}")
+
         label.config(fg='green', text="\n".join(progresso + ["✅ Instalação concluída com sucesso!"]))
 
     except Exception as e:
@@ -431,8 +514,20 @@ def main_gui():
             messagebox.showerror("Erro", "Informe um SERIAL válido.")
             return
         try:
+            # Verifica se o serial já foi usado
+            progresso.config(fg='blue', text="🔍 Verificando se o serial já foi utilizado...")
+            progresso.update()
+            
+            if verificar_serial_usado(serial):
+                progresso.config(fg='red', text=f"❌ Este serial ({serial}) já foi utilizado!\n\nCada serial pode ser usado apenas uma vez.\nEntre em contato com o suporte para obter um novo serial.")
+                return
+            
+            # Se o serial não foi usado, continua com a instalação
+            progresso.config(fg='blue', text="✅ Serial válido! Baixando configuração...")
+            progresso.update()
+            
             config = baixar_config_por_serial(serial)
-            instalar(config, progresso, botao_instalar)
+            instalar(config, progresso, botao_instalar, serial)
         except Exception as e:
             progresso.config(fg='red', text=f"❌ {e}")
 

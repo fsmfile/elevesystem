@@ -241,6 +241,35 @@ O `setup_loja.py` é o instalador principal do sistema que automatiza todo o pro
    - Crie novas configurações de cliente
    - Salva automaticamente no GitHub
 
+#### Controle de Serial Único 🔒
+
+O sistema implementa um controle rigoroso para garantir que cada serial seja usado apenas uma vez:
+
+**Como Funciona:**
+1. **Verificação pré-instalação**: Antes de iniciar a instalação, o sistema verifica no GitHub se o serial já foi usado
+2. **Bloqueio automático**: Se o serial já foi usado, a instalação é bloqueada com mensagem informativa
+3. **Marcação automática**: Após instalação bem-sucedida, o serial é automaticamente marcado como usado
+4. **Rastreabilidade**: Cada uso é registrado com data/hora e origem
+
+**Estrutura de Controle:**
+- **Pasta**: `used_serials/` no repositório GitHub
+- **Arquivo**: `{SERIAL}.json` para cada serial usado
+- **Conteúdo**: Data de uso, origem da instalação
+
+**Exemplo de Bloqueio:**
+```
+❌ Este serial (LPP001) já foi utilizado!
+
+Cada serial pode ser usado apenas uma vez.
+Entre em contato com o suporte para obter um novo serial.
+```
+
+**Benefícios:**
+- ✅ Previne instalações duplicadas
+- ✅ Controla distribuição de licenças  
+- ✅ Rastreabilidade completa de uso
+- ✅ Funcionamento online/offline
+
 #### Estrutura de Configuração JSON
 
 ```json
