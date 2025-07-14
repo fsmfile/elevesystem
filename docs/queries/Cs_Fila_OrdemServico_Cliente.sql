@@ -1,0 +1,4 @@
+SELECT tbl_rot_OrdemServico.Cod_OrdemServico, tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_rot_OrdemServico.NomeCliente_OrdemServico, tbl_rot_OrdemServico.Cod_Vendas, tbl_cad_veiculos.Placa_veiculo_br, tbl_rot_OrdemServico.Status_OrdemServico, tbl_rot_OrdemServico.Observacao_OrdemServico, tbl_rot_OrdemServico.DtHr_Finalizacao_OrdemServico, tbl_rot_OrdemServico.LocalAtend_OrdemServico
+FROM tbl_rot_OrdemServico LEFT JOIN tbl_cad_veiculos ON tbl_rot_OrdemServico.Cod_veiculo = tbl_cad_veiculos.Cod_veiculo
+WHERE (((tbl_rot_OrdemServico.Status_OrdemServico)<>6))
+ORDER BY tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico;

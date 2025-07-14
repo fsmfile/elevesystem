@@ -1,0 +1,3 @@
+SELECT tbl_Agendamento.Cod_OrdemServico_Agendamento, tbl_Agendamento.Cod_Tarefas_Agendamento, tbl_Agendamento.CodFuncAgendou_Agendamento, tbl_Agendamento.DtHr_Agendamento, tbl_Agendamento.AutorizadoPor_Agendamento, tbl_Agendamento.Autorizado_Agendamento, tbl_Agendamento.CancelarAgendamento, tbl_Agendamento.AutorizarCancelamento_Agendamento, tbl_Agendamento.CodAgenda_agendamento, tbl_Agendamento.CodHistoricoAgenda
+FROM tbl_Agendamento
+WHERE (((tbl_Agendamento.CancelarAgendamento)=False));

@@ -1,0 +1,2 @@
+SELECT tbl_rot_MovEstoque.CodRetiradaEst, tbl_rot_MovEstoque.dtHrRetiradaEst, tbl_rot_MovEstoque.FormaRetiradaEst, tbl_rot_MovEstoque.CodVenda_RetiradaEst, tbl_rot_MovEstoque.StatusMovEstoque
+FROM tbl_rot_MovEstoque;

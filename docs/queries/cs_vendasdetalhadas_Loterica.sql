@@ -1,0 +1,4 @@
+SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.subgrupo_prodserv, tbl_cad_prodserv.Grupo_prodServ, Sum(tbl_rot_vendasDetalhadas.Valor_unitario_vendasDet) AS SomaDeValor_unitario_vendasDet, tbl_cad_prodserv.TipoCalculo_prodserv
+FROM (tbl_cad_prodserv RIGHT JOIN tbl_rot_vendasDetalhadas ON tbl_cad_prodserv.Cod_ProdServ = tbl_rot_vendasDetalhadas.Cod_produto) LEFT JOIN (tbl_Prodserv_Promocao LEFT JOIN tbl_ProdServ_promDET ON tbl_Prodserv_Promocao.CodPromocao = tbl_ProdServ_promDET.CodPromocao) ON tbl_rot_vendasDetalhadas.Cod_produto = tbl_Prodserv_Promocao.CodPromocao
+GROUP BY tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.subgrupo_prodserv, tbl_cad_prodserv.Grupo_prodServ, tbl_cad_prodserv.TipoCalculo_prodserv
+HAVING (((tbl_rot_vendasDetalhadas.Cod_venda)=[Formulários]![Frm_rot_vendas]![Vendas]![cod_venda_name]));

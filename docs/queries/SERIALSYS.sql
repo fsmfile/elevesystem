@@ -1,0 +1,2 @@
+SELECT Last(tbl_serialMensal.PasswordMes_Serial) AS ÚltimoDePasswordMes_Serial
+FROM tbl_serialMensal;

@@ -1,0 +1,4 @@
+SELECT tbl_rot_vendas.Cod_venda, DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS DtFiltro, tbl_cad_clientes.Apelido_Cliente AS Cliente, tbl_cad_formasPagamentoVENDASDET.Cod_formasPagamento, tbl_cad_formasPagamentoVENDASDET.QtdVezes_venda, tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVendasDet, tbl_rot_vendas.Cod_formaRetiradaEstoque
+FROM (tbl_rot_vendas LEFT JOIN tbl_cad_formasPagamentoVENDASDET ON tbl_rot_vendas.Cod_venda = tbl_cad_formasPagamentoVENDASDET.Cod_Venda) LEFT JOIN tbl_cad_clientes ON tbl_rot_vendas.Cod_cliente = tbl_cad_clientes.Cod_cliente
+WHERE (((DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda]))) Between Formulários!frm_cs_VendasPorFormaPagamento_Total!txtDtInicial And Formulários!frm_cs_VendasPorFormaPagamento_Total!txtdtFinal) And ((tbl_rot_vendas.Cod_formaRetiradaEstoque)=1) And ((tbl_rot_vendas.VendaFinalizada_vendas)=Yes))
+ORDER BY tbl_rot_vendas.Cod_venda;

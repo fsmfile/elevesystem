@@ -1,0 +1,3 @@
+SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Cod_comissionista_G1, tbl_rot_vendas.DtValidadeOrcamento, tbl_rot_vendas.Cod_cliente, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendas.Grupo_vendas, tbl_rot_vendas.AutorizadoPor, tbl_rot_vendas.VendaFinalizada_vendas, tbl_rot_vendas.CNPJ_loja, tbl_rot_vendas.Observacao, tbl_rot_vendas.Cod_formaRetiradaEstoque
+FROM tbl_rot_vendas
+WHERE (((tbl_rot_vendas.Cod_venda)=[Formulários]![Frm_rot_vendas]![vendas]![CxLocVenda]) AND ((tbl_rot_vendas.Grupo_vendas)=1) AND ((tbl_rot_vendas.VendaFinalizada_vendas)=No) AND ((tbl_rot_vendas.Cod_formaRetiradaEstoque)=1));

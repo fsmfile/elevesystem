@@ -1,0 +1,3 @@
+SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Cod_comissionista_G1, tbl_rot_vendas.OptionVenda_venda AS Expr1, tbl_rot_vendas.OptionOrcamento_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendas.Status_vendas AS Expr2, tbl_cad_clientes.Nome_Cliente AS Expr3, tbl_cad_clientes.CPF_Cliente AS Expr4, tbl_cad_clientes.CNPJ_Cliente AS Expr5
+FROM Cs_PermissoesSistema, (tbl_cad_clientes RIGHT JOIN tbl_rot_vendas ON tbl_cad_clientes.Cod_cliente = tbl_rot_vendas.Cod_cliente) INNER JOIN tbl_rot_vendasDetalhadas ON tbl_rot_vendas.Cod_venda = tbl_rot_vendasDetalhadas.Cod_venda
+ORDER BY tbl_rot_vendas.Dt_Hr_venda;

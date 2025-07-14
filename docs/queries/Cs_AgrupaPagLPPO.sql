@@ -1,0 +1,4 @@
+SELECT tbl_rot_PagFornecedor_contasApagar.codContasApagarDET, tbl_rot_PagFornecedor_contasApagar.FormaPagPagForn_CP, Sum(tbl_rot_PagFornecedor_contasApagar.ValorPagoPagForn_CP) AS SomaDeValorPagoPagForn_CP, tbl_rot_contaApagar_Det.LPPO_ContasaPagarDET
+FROM tbl_rot_contaApagar_Det LEFT JOIN tbl_rot_PagFornecedor_contasApagar ON tbl_rot_contaApagar_Det.Cod_CADET = tbl_rot_PagFornecedor_contasApagar.codContasApagarDET
+GROUP BY tbl_rot_PagFornecedor_contasApagar.codContasApagarDET, tbl_rot_PagFornecedor_contasApagar.FormaPagPagForn_CP, tbl_rot_contaApagar_Det.LPPO_ContasaPagarDET
+HAVING (((tbl_rot_PagFornecedor_contasApagar.codContasApagarDET) Is Not Null) AND ((tbl_rot_contaApagar_Det.LPPO_ContasaPagarDET)=Yes));

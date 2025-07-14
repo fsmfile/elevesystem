@@ -1,0 +1,2 @@
+SELECT tbl_cad_Planocontas.codAut_PlanoContas, tbl_cad_Planocontas.Categoria_PlanoContas, tbl_cad_Planocontas.Nome_PlanoContas, tbl_cad_Planocontas.Descricao_PlanoContas, tbl_cad_Planocontas.Ativo_PlanoContas
+FROM tbl_cad_Planocontas;

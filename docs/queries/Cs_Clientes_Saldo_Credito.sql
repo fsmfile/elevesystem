@@ -1,0 +1,4 @@
+SELECT tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.Apelido_cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente, Nz([CreditoCompra_cliente],0) AS Credito, IIf([SaldoDevedor]<0,0,[SaldoDevedor]) AS SaldoDevedo, Sum(IIf([CreditoCompra_cliente]-[saldodevedor]<0,0,[CreditoCompra_cliente]-[saldodevedor])) AS SaldoCredito, tbl_cad_clientes.CreditoCompra_cliente
+FROM tbl_cad_clientes LEFT JOIN Cs_Clientes_Debito ON tbl_cad_clientes.Cod_cliente = Cs_Clientes_Debito.Cod_cliente
+GROUP BY tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.Apelido_cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente, Nz([CreditoCompra_cliente],0), IIf([SaldoDevedor]<0,0,[SaldoDevedor]), tbl_cad_clientes.CreditoCompra_cliente
+ORDER BY Sum(IIf([CreditoCompra_cliente]-[saldodevedor]<0,0,[CreditoCompra_cliente]-[saldodevedor]));

@@ -1,0 +1,3 @@
+SELECT tbl_cad_formasPagamentoVENDASDET.Cod_FormasPagVendasDet, tbl_cad_formasPagamentoVENDASDET.Historico_formasPagVendasDet, tbl_cad_formasPagamentoVENDASDET.Cod_formasPagamento, tbl_cad_formasPagamento.Nome_FormaPagamento, tbl_cad_formasPagamentoVENDASDET.Cod_Venda, tbl_cad_formasPagamentoVENDASDET.QtdVezes_venda, tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVendasDet
+FROM tbl_cad_formasPagamentoVENDASDET LEFT JOIN tbl_cad_formasPagamento ON tbl_cad_formasPagamentoVENDASDET.Cod_formasPagamento = tbl_cad_formasPagamento.Cod_formasPagamento
+WHERE (((tbl_cad_formasPagamentoVENDASDET.Cod_Venda)=[Formulários]![Frm_rot_vendas]![Vendas]![cod_venda]));

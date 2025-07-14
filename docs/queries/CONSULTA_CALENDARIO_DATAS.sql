@@ -1,0 +1,3 @@
+SELECT [cod_ordemservico] & " " & [HrInicial_Agenda] AS InputText, tbl_Agenda.ID
+FROM tbl_rot_tarefas RIGHT JOIN (tbl_rot_OrdemServico RIGHT JOIN (tbl_cad_funcionarios RIGHT JOIN (tbl_Agenda LEFT JOIN tbl_Agendamento ON tbl_Agenda.ID = tbl_Agendamento.CodAgenda_agendamento) ON tbl_cad_funcionarios.mat_funcionario = tbl_Agenda.Funcionario_Agenda) ON tbl_rot_OrdemServico.Cod_OrdemServico = tbl_Agendamento.Cod_OrdemServico_Agendamento) ON tbl_rot_tarefas.ID = tbl_Agendamento.Cod_Tarefas_Agendamento
+WHERE (((tbl_Agenda.Funcionario_Agenda) Like "*" & [Formulários]![Frmagenda]![CxFuncionario] & "*") AND ((([DtAgenda]))=#2/7/2019#) AND ((tbl_Agenda.Cancelar_Agenda)=False) AND ((tbl_Agendamento.CancelarAgendamento)=0 Or (tbl_Agendamento.CancelarAgendamento) Is Null));

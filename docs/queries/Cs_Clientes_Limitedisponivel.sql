@@ -1,0 +1,3 @@
+SELECT Cs_Clientes_Saldo_Credito.Cod_cliente AS Expr1, Cs_Clientes_Saldo_Credito.SaldoDevedor AS Expr2, Cs_Clientes_Saldo_Credito.SaldoCredito AS Expr3, Cs_Clientes_Saldo_Credito.CreditoCompra_cliente AS Expr4, [creditocompra_cliente]+[saldocredito] AS LimiteDisponivel
+FROM Cs_saldodevedor_debito_ContasReceber, Cs_Clientes_Saldo_Credito
+GROUP BY Cs_Clientes_Saldo_Credito.Cod_cliente, Cs_Clientes_Saldo_Credito.SaldoDevedor, Cs_Clientes_Saldo_Credito.SaldoCredito, Cs_Clientes_Saldo_Credito.CreditoCompra_cliente, [creditocompra_cliente]+[saldocredito];

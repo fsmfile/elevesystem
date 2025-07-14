@@ -1,0 +1,2 @@
+SELECT tbl_cad_TipoUsuarioAutEst.cod_Tipousuarioautest, tbl_cad_TipoUsuarioAutEst.filtro
+FROM tbl_cad_TipoUsuarioAutEst;

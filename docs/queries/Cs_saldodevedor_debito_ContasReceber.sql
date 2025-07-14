@@ -1,0 +1,3 @@
+SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(Cs_DebitoPagCli_DEVEDOR.SomaDeValorParc_ContasReceberDET) AS SomaDeSomaDeValorParc_ContasReceberDET, Sum(Cs_DebitoPagCli_PAGO.TotalValorPago) AS SomaDeTotalValorPago, CCur(Nz(Sum([SomaDeValorParc_ContasReceberDET]-[TotalValorPago]),0)) AS SaldoDevedor
+FROM (Cs_DebitoPagCli_DEVEDOR RIGHT JOIN tbl_rot_ContasReceber_det ON Cs_DebitoPagCli_DEVEDOR.cod_ContasReceberDET = tbl_rot_ContasReceber_det.cod_ContasReceberDET) LEFT JOIN Cs_DebitoPagCli_PAGO ON tbl_rot_ContasReceber_det.cod_ContasReceberDET = Cs_DebitoPagCli_PAGO.cod_ContasReceberDET
+GROUP BY tbl_rot_ContasReceber_det.cod_ContasReceberDET;

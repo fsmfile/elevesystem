@@ -1,0 +1,3 @@
+SELECT tbl_cad_comissionista.Cod_comissionista, tbl_cad_funcionarios.Nome_funcionario AS [Nome do Func], tbl_cad_funcionarios.mat_funcionario, tbl_cad_comissionista.Grupo_comissionista, tbl_cad_comissionista.Permissao_comissionista AS [Em Atividade], tbl_cad_comissionista.Externo_comissionista AS [Externo?], tbl_cad_comissionista.Observacao_comissionista
+FROM tbl_cad_grupo_comissionista INNER JOIN (tbl_cad_funcionarios INNER JOIN tbl_cad_comissionista ON tbl_cad_funcionarios.mat_funcionario = tbl_cad_comissionista.Mat_funcionario) ON tbl_cad_grupo_comissionista.Cod_Grupo_comissionista = tbl_cad_comissionista.Grupo_comissionista
+ORDER BY tbl_cad_funcionarios.Nome_funcionario;

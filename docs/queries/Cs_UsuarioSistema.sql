@@ -1,0 +1,2 @@
+SELECT tbl_cad_UsuarioSistema.Cod_usuarioSistema, tbl_cad_UsuarioSistema.matFuncionario, tbl_cad_UsuarioSistema.login_usuarioSistema, tbl_cad_GrupoSistema.Grupo_grupoUsuario, tbl_cad_GrupoSistema.Descricao_grupoSistema
+FROM tbl_cad_funcionarios RIGHT JOIN (tbl_cad_GrupoSistema RIGHT JOIN tbl_cad_UsuarioSistema ON tbl_cad_GrupoSistema.cod_grupoUsuario = tbl_cad_UsuarioSistema.Cod_Grupo_usuarioSistema) ON tbl_cad_funcionarios.mat_funcionario = tbl_cad_UsuarioSistema.matFuncionario;

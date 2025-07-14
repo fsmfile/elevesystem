@@ -1,0 +1,4 @@
+SELECT tbl_cad_GrupoSistema.cod_grupoUsuario, tbl_cad_GrupoSistema.Grupo_grupoUsuario, tbl_cad_hierarquiaGruposSistema.cod_hierarquia, tbl_cad_hierarquiaGruposSistema.Cod_GrupoSistemaABAIXO
+FROM tbl_cad_GrupoSistema LEFT JOIN tbl_cad_hierarquiaGruposSistema ON tbl_cad_GrupoSistema.cod_grupoUsuario = tbl_cad_hierarquiaGruposSistema.Cod_GrupoSistemaACIMA
+GROUP BY tbl_cad_GrupoSistema.cod_grupoUsuario, tbl_cad_GrupoSistema.Grupo_grupoUsuario, tbl_cad_hierarquiaGruposSistema.cod_hierarquia, tbl_cad_hierarquiaGruposSistema.Cod_GrupoSistemaABAIXO
+HAVING (((tbl_cad_GrupoSistema.Grupo_grupoUsuario)=IIf([Formulários]![Frm_MenuPrinc]![txtPerfilUsuarioLogado]="administrador","Administrador","gestores")));

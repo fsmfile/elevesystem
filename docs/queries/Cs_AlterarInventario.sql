@@ -1,0 +1,2 @@
+SELECT TMP_Estoque.Cod_ProdServ AS CodProd, tbl_cad_prodserv.SubGrupo_prodserv AS SubGrupo, tbl_cad_prodserv.Nome_prodServ AS Descrição, TMP_Estoque.[Total em estoque], TMP_Estoque.NovaQuantidade AS [Nova Contagem], [novaquantidade]-[total em estoque] AS Calculo, TMP_Estoque.Alterar, IIf([alterar]=-1,1,0) AS Teste, IIf([Alterar]=Yes,[Nova Contagem]) AS TesteAltera, IIf([TesteAltera]=0,1,0) AS Altera0
+FROM TMP_Estoque RIGHT JOIN tbl_cad_prodserv ON TMP_Estoque.Cod_ProdServ = tbl_cad_prodserv.Cod_ProdServ;

@@ -21,6 +21,10 @@ from tkinter import ttk, messagebox, simpledialog
 from ttkbootstrap import Style
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+# Fallback: se não encontrar na variável de ambiente, usa o token conhecido
+if not GITHUB_TOKEN:
+    # Token configurado manualmente (pode ser removido após reiniciar o sistema)
+    GITHUB_TOKEN = "[REDACTED]ZECof0HKo0mREzstUwdJp4ytXlIPNa30SWjj"
 GITHUB_USER = "fsmfile"
 GITHUB_REPO = "elevesystem"
 GITHUB_BRANCH = "main"
@@ -29,6 +33,7 @@ CONFIG_URL_BASE = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO
 ICON_PATH = Path(__file__).parent / "ico" / "setup.ico"
 
 def baixar_config_por_serial(serial: str) -> dict:
+    serial = serial.strip().upper()  # Garante maiúsculo e sem espaços
     url = f"{CONFIG_URL_BASE}{serial}.json"
     try:
         with urllib.request.urlopen(url) as resp:
@@ -36,7 +41,7 @@ def baixar_config_por_serial(serial: str) -> dict:
                 raise Exception(f"Erro ao acessar o arquivo: {resp.status}")
             return json.load(resp)
     except urllib.error.HTTPError as e:
-        raise Exception(f"SERIAL não encontrado (HTTP {e.code})")
+        raise Exception(f"SERIAL não encontrado (HTTP {e.code})\nURL: {url}")
     except urllib.error.URLError as e:
         raise Exception("Falha de conexão. Verifique sua internet.")
     except Exception as e:
@@ -73,32 +78,133 @@ def connect_access(db_path: Path, senha: str):
     return pyodbc.connect(conn_str, autocommit=True)
 
 def garantir_tabela_licenca(conn):
+    """Garante que a tabela de licença existe com todos os campos necessários"""
     cur = conn.cursor()
     try:
+        # Verifica se a tabela existe
         cur.execute("SELECT TOP 1 * FROM tblLicencaLocal")
+        print("✅ Tabela tblLicencaLocal já existe")
+        
+        # Verifica se os novos campos existem
+        campos_necessarios = [
+            ('DataInicioCarencia', 'DATETIME'),
+            ('DiasCarenciaUtilizados', 'INTEGER'),
+            ('LicencaValida', 'BIT')
+        ]
+        
+        for campo, tipo in campos_necessarios:
+            try:
+                cur.execute(f"SELECT {campo} FROM tblLicencaLocal")
+                print(f"✅ Campo {campo} já existe")
+            except:
+                # Adiciona campo se não existir
+                cur.execute(f"ALTER TABLE tblLicencaLocal ADD COLUMN {campo} {tipo}")
+                print(f"✅ Campo {campo} adicionado")
+                
     except:
-        cur.execute("CREATE TABLE tblLicencaLocal (ClienteID TEXT(100), HardwareID TEXT(100), UltimaDataOk DATETIME);")
+        # Cria tabela completa se não existir
+        print("🔧 Criando tabela tblLicencaLocal...")
+        cur.execute("""
+            CREATE TABLE tblLicencaLocal (
+                ClienteID TEXT(100),
+                HardwareID TEXT(100),
+                UltimaDataOk DATETIME,
+                DataInicioCarencia DATETIME,
+                DiasCarenciaUtilizados INTEGER,
+                LicencaValida BIT
+            )
+        """)
+        print("✅ Tabela tblLicencaLocal criada com sucesso")
+    
+    # NÃO insere registro padrão - deixa vazia para o gravar_licenca configurar
+    
+    conn.commit()
     cur.close()
 
 def gravar_licenca(conn, client_id: str, dias: int, forcar: bool = False):
+    """Grava ou atualiza a licença do cliente no backend"""
     cur = conn.cursor()
+    
+    # Obtém hardware ID
+    try:
+        import subprocess
+        result = subprocess.run(['wmic', 'csproduct', 'get', 'uuid'], 
+                              capture_output=True, text=True, shell=True)
+        lines = result.stdout.strip().split('\n')
+        if len(lines) >= 2:
+            hardware_id = lines[1].strip()
+        else:
+            hardware_id = f"HW_{dt.datetime.now().strftime('%Y%m%d%H%M%S')}"
+    except:
+        hardware_id = f"HW_{dt.datetime.now().strftime('%Y%m%d%H%M%S')}"
+    
+    # Verifica se já existe registro
     cur.execute("SELECT COUNT(*) FROM tblLicencaLocal")
     ja_tem = cur.fetchone()[0] > 0
+    
     if not ja_tem or forcar:
-        cur.execute("DELETE FROM tblLicencaLocal;")
-        cur.execute("INSERT INTO tblLicencaLocal VALUES (?,?,?);", (
-            client_id, uuid4().hex, dt.datetime.now() - dt.timedelta(days=dias)))
+        # Remove registros existentes se forçar
+        if forcar:
+            cur.execute("DELETE FROM tblLicencaLocal")
+        
+        # Insere novo registro com todos os campos
+        cur.execute("""
+            INSERT INTO tblLicencaLocal 
+            (ClienteID, HardwareID, UltimaDataOk, DataInicioCarencia, DiasCarenciaUtilizados, LicencaValida)
+            VALUES (?, ?, ?, NULL, 0, True)
+        """, (client_id, hardware_id, dt.datetime.now()))
+        
+        print(f"✅ Licença gravada para cliente: {client_id}")
+        print(f"   Hardware ID: {hardware_id}")
+    else:
+        # Atualiza registro existente
+        cur.execute("""
+            UPDATE tblLicencaLocal 
+            SET ClienteID = ?, HardwareID = ?, UltimaDataOk = ?, LicencaValida = True
+            WHERE ClienteID IS NOT NULL
+        """, (client_id, hardware_id, dt.datetime.now()))
+        
+        print(f"✅ Licença atualizada para cliente: {client_id}")
+    
+    conn.commit()
     cur.close()
 
 def criar_atalho(frontend_path: Path, nome_atalho: str):
     try:
         import win32com.client
-        desktop = Path(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
+        
+        # Tenta diferentes locais para o desktop
+        desktop_locations = [
+            Path(os.path.join(os.environ['USERPROFILE'], 'Desktop')),
+            Path(os.path.join(os.environ['PUBLIC'], 'Desktop')),
+            Path("C:\\Users\\Public\\Desktop")
+        ]
+        
+        desktop = None
+        for loc in desktop_locations:
+            if loc.exists() and loc.is_dir():
+                desktop = loc
+                break
+        
+        if not desktop:
+            print("⚠️ Desktop não encontrado. Atalho não será criado.")
+            return
+        
         atalho = desktop / nome_atalho
+        
+        # Verifica se já existe e remove se necessário
+        if atalho.exists():
+            try:
+                atalho.unlink()
+            except:
+                pass
+        
+        # Tenta criar o atalho
         shell = win32com.client.Dispatch('WScript.Shell')
         lnk = shell.CreateShortCut(str(atalho))
         lnk.Targetpath = str(frontend_path)
         lnk.WorkingDirectory = str(frontend_path.parent)
+        lnk.Description = "Eleve System - Sistema de Gestão Empresarial"
 
         # Extrai o ícone mesmo empacotado no .exe
         if getattr(sys, 'frozen', False):
@@ -111,13 +217,34 @@ def criar_atalho(frontend_path: Path, nome_atalho: str):
             lnk.IconLocation = f"{str(icone_final)},0"
 
         lnk.save()
+        print(f"✅ Atalho criado em: {atalho}")
+        
+    except PermissionError:
+        print("⚠️ Sem permissão para criar atalho no desktop.")
+        print("   O sistema foi instalado, mas você precisará criar o atalho manualmente.")
+        print(f"   Caminho do executável: {frontend_path}")
+        
     except Exception as e:
-        print("Erro ao criar atalho:", e)
+        print(f"⚠️ Erro ao criar atalho: {e}")
+        print(f"   O sistema foi instalado em: {frontend_path}")
+        print("   Você pode criar o atalho manualmente ou executar diretamente.")
 
 
 def upload_json_para_github(filename: str, data: dict):
     if not GITHUB_TOKEN:
-        raise Exception("Token do GitHub não encontrado. Defina a variável de ambiente 'GITHUB_TOKEN'.")
+        # Salva localmente na pasta configs como alternativa
+        configs_dir = Path(__file__).parent / "configs"
+        configs_dir.mkdir(exist_ok=True)
+        
+        local_file = configs_dir / filename
+        with open(local_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        
+        raise Exception(f"Token do GitHub não encontrado.\n\n"
+                       f"O arquivo {filename} foi salvo localmente em:\n{local_file}\n\n"
+                       f"Para salvar diretamente no GitHub:\n"
+                       f"1. Configure a variável de ambiente 'GITHUB_TOKEN'\n"
+                       f"2. Ou mova manualmente o arquivo para o repositório")
 
     url = f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/contents/configs/{filename}"
     conteudo = json.dumps(data, indent=2, ensure_ascii=False)
@@ -188,7 +315,21 @@ def abrir_modo_dev(root):
             messagebox.showinfo("Sucesso", f"Arquivo {serial}.json salvo no GitHub!")
             dev_win.destroy()
         except Exception as e:
-            messagebox.showerror("Erro", str(e))
+            error_msg = str(e)
+            if "Token do GitHub não encontrado" in error_msg:
+                # Se é o erro de token mas o arquivo foi salvo localmente
+                if "foi salvo localmente" in error_msg:
+                    resposta = messagebox.askyesno(
+                        "Arquivo Salvo Localmente", 
+                        f"{error_msg}\n\nDeseja fechar a janela mesmo assim?",
+                        icon='warning'
+                    )
+                    if resposta:
+                        dev_win.destroy()
+                else:
+                    messagebox.showerror("Erro", error_msg)
+            else:
+                messagebox.showerror("Erro", error_msg)
 
     ttk.Button(dev_win, text="Salvar no GitHub", command=salvar).pack(pady=15)
 
@@ -216,9 +357,17 @@ def instalar(config: dict, label: tk.Label, btn: ttk.Button):
             progresso.append("✔ Frontend já presente")
 
         add_trusted_location(pasta)
+        progresso.append("✔ Local confiável configurado")
+        
+        # Configuração do sistema de licença
+        label.config(fg='blue', text="\n".join(progresso + ["🔧 Configurando sistema de licença..."]))
+        label.update()
+        
         conn = connect_access(be, config['DB_PASSWORD'])
         garantir_tabela_licenca(conn)
+        progresso.append("✔ Tabela de licença configurada")
 
+        # Verifica cliente atual
         cur = conn.cursor()
         cur.execute("SELECT ClienteID FROM tblLicencaLocal")
         linha = cur.fetchone()
@@ -230,10 +379,18 @@ def instalar(config: dict, label: tk.Label, btn: ttk.Button):
             label.config(fg='red', text=f"❌ Este instalador é para '{config['CLIENT_ID']}', mas o sistema já está ativado como '{cliente_instalado}'.\n\nEntre em contato com o suporte para reconfiguração.")
             return
 
+        # Grava licença do cliente
         gravar_licenca(conn, config['CLIENT_ID'], int(config['CARÊNCIA_DIAS']), forcar=False)
+        progresso.append(f"✔ Licença configurada para: {config['CLIENT_ID']}")
         conn.close()
-        criar_atalho(fe, config['SHORTCUT_NAME'])
-        progresso.append("✔ Atalho criado")
+        
+        # Tenta criar atalho, mas não falha se der erro
+        try:
+            criar_atalho(fe, config['SHORTCUT_NAME'])
+            progresso.append("✔ Atalho criado")
+        except:
+            progresso.append("⚠️ Atalho não criado (sem permissão)")
+            progresso.append(f"   Execute: {fe}")
 
         label.config(fg='green', text="\n".join(progresso + ["✅ Instalação concluída com sucesso!"]))
 

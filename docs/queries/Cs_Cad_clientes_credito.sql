@@ -1,0 +1,2 @@
+SELECT tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente, tbl_cad_clientes.[E-mail_cliente], tbl_cad_clientes.Vinculo_cliente, tbl_cad_clientes.CreditoCompra_cliente, tbl_cad_clientes.BloquearComprasAPrazo
+FROM tbl_cad_clientes LEFT JOIN tbl_cad_clientes AS tbl_cad_clientes_1 ON tbl_cad_clientes.Vinculo_cliente = tbl_cad_clientes_1.Cod_cliente;

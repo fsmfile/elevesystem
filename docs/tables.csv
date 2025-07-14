@@ -1,0 +1,127 @@
+Table;Scope;Connect
+_parametros;Local;
+_parametros_Cliente_OrdemServico;Local;
+_Security_Conf;Local;
+Municípios;Local;
+Reg_App;Local;
+tbl_acao_AbrirForm;Local;
+tbl_Agenda;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_Agendamento;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_altBe;Local;
+tbl_anexos_contasaPagar;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_AcaoVendas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_AcaoVendasDET;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_alertas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_Alertas_Permissao;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_AutorizacaoRetirar_Estoque;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_caixa;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_CaminhoBE;Local;
+tbl_cad_Caption;Local;
+tbl_cad_CategoriaLig;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_CategoriaTarefas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_cheque;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_clientes;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_ClientesFLM;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_comissionista;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_compras;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+Tbl_cad_comprasDetalhadas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_contas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_forma_retiradaEstoque;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_formasPagamento;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_formasPagamentoVENDASDET;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_formasPagContasaPagar;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_formHiperlink;Local;
+tbl_cad_fornecedor;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_funcionario_detsalario;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_funcionarios;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_grupo_Comissao_ProdServ;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_grupo_comissionista;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_grupo_prodserv;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_GrupoCliente;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_GrupoSistema;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_hierarquiaGruposSistema;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_IntervaloPag;Local;
+tbl_cad_localAtend_OrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_lojas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_lojas_licenca;Local;
+tbl_cad_marcaProdserv;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_Metas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_MotivoEstornoVenda;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_Planocontas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_prodserv;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_produtoDetalhado;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_StatusMovEstoque;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_StatusOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_StatusTarefas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_TipoUsuarioAutEst;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_UsuarioSistema;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_cad_veiculos;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_caixa;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_Cliente_Grupo;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_ClientesConsulta_FuncAtend;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_comandosCriarRelac;Local;
+tbl_ComissionistaDaOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_ComissionistaDaReabOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_ConfigBasica;Local;
+tbl_ConfigBasica_Permissoes;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_CreditoDebito;Local;
+tbl_CriarRelacBe;Local;
+tbl_CriarTbl;Local;
+tbl_data;Local;
+tbl_detalhesOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_fluxo_ReceitasPrevistas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_GrupoNoProdServ_Det;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_LaudoOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_LOG;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_NrSerie_Prod;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_PainelChamaCliente;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_PermissaoStatusOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_processos;Local;
+tbl_processosDetalhados;Local;
+tbl_ProdServ_promDET;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_Prodserv_Promocao;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_ReaberturaOrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_RegFinanceiro;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_regPonto;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_Regras_comissionista;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_clientes_Consulta;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_contaApagar;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_contaApagar_Det;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_contasareceber;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_ContasReceber_det;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_entregas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_entregasDET;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_LancCaixa;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_MovEstoque;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_MovEstoque_Prod;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_OrdemServico;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_PagCli_contasReceber;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_PagFornecedor_contasApagar;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_RegLig;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_SaldoAno;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_tarefas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_vale;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_vendas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_rot_vendasDetalhadas;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_salario_funcionario;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_serialMensal;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_TipoRegPonto;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_VendasDET_NRSerie;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_VendasDetalhadas_KitProd;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_VendasDetKitProd_NRSerie;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_VersaoBackEnd;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tbl_VersaoSistema;Local;
+tbl_VinculoCaixa;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+tblCaminhoBe;Local;
+TblLicencas;Local;
+tlb_processosDetalhados_PermissaoGrupos;Linked;"MS Access;PWD=Ca486575@;DATABASE=C:\FLMSISTEMAS\FLMSistemas_be.accdb"
+TMP_Cliente_Email;Local;
+TMP_ComissionistaDaOS;Local;
+TMP_ConfigBE;Local;
+TMP_ContasReceber_Saldo_Individual;Local;
+TMP_ContasReceberDET_CriarCR;Local;
+TMP_Estoque;Local;
+TMP_formasPagamento;Local;
+TMP_Planocontas;Local;
+TMP_Planocontas_Entrada;Local;
+TMP_SaldoLancCaixa;Local;

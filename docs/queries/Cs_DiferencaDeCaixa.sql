@@ -1,0 +1,2 @@
+SELECT tbl_rot_SaldoAno.Cod_SaldoAno AS CodDifCaixa, tbl_rot_SaldoAno.Ano_SaldoAno AS DataDifCaixa, tbl_rot_SaldoAno.Valor_SaldoAno AS ValorDifCaixa, tbl_rot_SaldoAno.Resumo_SaldoAno AS UsuarioDifCaixa, tbl_rot_SaldoAno.Descricao_SaldoAno AS MotivoDifCaixa
+FROM tbl_rot_SaldoAno;

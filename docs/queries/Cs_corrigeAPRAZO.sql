@@ -1,0 +1,2 @@
+UPDATE tbl_rot_contasareceber LEFT JOIN (tbl_rot_vendas LEFT JOIN tbl_cad_clientes ON tbl_rot_vendas.Cod_cliente = tbl_cad_clientes.Cod_cliente) ON tbl_rot_contasareceber.CodVenda_contasReceber = tbl_rot_vendas.Cod_venda SET tbl_rot_contasareceber.CodCliente_contasReceber = [tbl_cad_clientes]![Cod_cliente]
+WHERE (((tbl_rot_contasareceber.CodCliente_contasReceber) Is Null) AND ((tbl_rot_contasareceber.CodVenda_contasReceber) Is Not Null));

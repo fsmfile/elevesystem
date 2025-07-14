@@ -1,0 +1,2 @@
+SELECT Last(Cs_ContasReceberMensal.Cod_contasAreceber) AS Cod_contasAreceber, Last(Cs_ContasReceberMensal.DtVencimento_contasReceber) AS DtVencimento_contasReceber, Last(Cs_ContasReceberMensal.ValorTotal_ContasReceber) AS ValorTotal_ContasReceber, Last(Cs_ContasReceberMensal.CodVenda_contasReceber) AS CodVenda_contasReceber, Last(Cs_ContasReceberMensal.PlanoMensal) AS PlanoMensal, Last(Cs_ContasReceberMensal.UltimaVerificacaoPME) AS UltimaVerificacaoPM, Last(Cs_ContasReceberMensal.ContasReceber_Ativo) AS ÚltimoDeContasReceber_Ativo
+FROM Cs_ContasReceberMensal;

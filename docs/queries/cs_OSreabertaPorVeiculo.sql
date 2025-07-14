@@ -1,0 +1,3 @@
+SELECT tbl_ReaberturaOrdemServico.Cod_OrdemServico, [subgrupo_prodserv] & " " & [nome_prodserv] AS NomeServ, tbl_ReaberturaOrdemServico.DtHrReabertura, tbl_ReaberturaOrdemServico.NomeCliente, tbl_ReaberturaOrdemServico.Observacao_reaberturaOS, tbl_cad_veiculos.Placa_veiculo_br
+FROM ((tbl_rot_OrdemServico LEFT JOIN tbl_cad_prodserv ON tbl_rot_OrdemServico.Cod_prodServ = tbl_cad_prodserv.Cod_ProdServ) LEFT JOIN tbl_cad_veiculos ON tbl_rot_OrdemServico.Cod_veiculo = tbl_cad_veiculos.Cod_veiculo) LEFT JOIN tbl_ReaberturaOrdemServico ON tbl_rot_OrdemServico.Cod_OrdemServico = tbl_ReaberturaOrdemServico.Cod_OrdemServico
+WHERE (((tbl_ReaberturaOrdemServico.Cod_OrdemServico) Is Not Null));

@@ -1,0 +1,3 @@
+SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(tbl_rot_ContasReceber_det.ValorParc_ContasReceberDET) AS SomaDeValorParc_ContasReceberDET
+FROM (tbl_cad_clientes LEFT JOIN tbl_rot_contasareceber ON tbl_cad_clientes.Cod_cliente = tbl_rot_contasareceber.CodCliente_contasReceber) LEFT JOIN tbl_rot_ContasReceber_det ON tbl_rot_contasareceber.Cod_contasAreceber = tbl_rot_ContasReceber_det.Cod_ContasReceber
+GROUP BY tbl_rot_ContasReceber_det.cod_ContasReceberDET;

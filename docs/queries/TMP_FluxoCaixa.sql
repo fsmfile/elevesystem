@@ -1,0 +1,4 @@
+SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS Dt_Hr_vend, Sum(tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVendasDet) AS Valor, tbl_cad_formasPagamento.Nome_FormaPagamento AS [Forma de Pagamento], "Venda" AS Origem
+FROM (tbl_rot_vendas INNER JOIN tbl_cad_formasPagamentoVENDASDET ON tbl_rot_vendas.Cod_venda = tbl_cad_formasPagamentoVENDASDET.Cod_Venda) LEFT JOIN tbl_cad_formasPagamento ON tbl_cad_formasPagamentoVENDASDET.Cod_formasPagamento = tbl_cad_formasPagamento.Cod_formasPagamento
+GROUP BY DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])), tbl_cad_formasPagamento.Nome_FormaPagamento, "Venda", tbl_rot_vendas.Cod_formaRetiradaEstoque, tbl_rot_vendas.VendaFinalizada_vendas
+HAVING (((tbl_rot_vendas.Cod_formaRetiradaEstoque)=1) AND ((tbl_rot_vendas.VendaFinalizada_vendas)=Yes));

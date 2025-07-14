@@ -1,0 +1,4 @@
+SELECT [NomeRazaoSocial_Cliente] & " " & [telefone_cliente] AS Cliente, tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente, Sum(Cs_SaldoDevedor_Debito_ContasReceber.SaldoDevedor) AS SomaDeSaldoDevedor, Sum(Cs_DebitoPagCli_PAGO_hoje.TotalValorPago) AS SomaDeTotalValorPago1
+FROM ((Cs_clientes_Debito_det RIGHT JOIN tbl_cad_clientes ON Cs_clientes_Debito_det.CodCliente_contasReceber = tbl_cad_clientes.Cod_cliente) LEFT JOIN Cs_SaldoDevedor_Debito_ContasReceber ON Cs_clientes_Debito_det.cod_ContasReceberDET = Cs_SaldoDevedor_Debito_ContasReceber.cod_ContasReceberDET) LEFT JOIN Cs_DebitoPagCli_PAGO_hoje ON Cs_clientes_Debito_det.cod_ContasReceberDET = Cs_DebitoPagCli_PAGO_hoje.cod_ContasReceberDET
+GROUP BY [NomeRazaoSocial_Cliente] & " " & [telefone_cliente], tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente
+HAVING (((Sum(Cs_SaldoDevedor_Debito_ContasReceber.SaldoDevedor))<=0));

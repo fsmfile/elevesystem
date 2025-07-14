@@ -1,0 +1,4 @@
+SELECT tbl_cad_prodserv.Cod_ProdServ, IIf(Sum([Quantidade_VendasDet]),Sum([Quantidade_VendasDet]),0) AS EmprestimoEstoque, tbl_rot_vendas.Cod_formaRetiradaEstoque, tbl_rot_vendas.Dt_Hr_venda
+FROM (tbl_cad_prodserv LEFT JOIN tbl_rot_vendasDetalhadas ON tbl_cad_prodserv.Cod_ProdServ = tbl_rot_vendasDetalhadas.Cod_produto) LEFT JOIN tbl_rot_vendas ON tbl_rot_vendasDetalhadas.Cod_venda = tbl_rot_vendas.Cod_venda
+GROUP BY tbl_cad_prodserv.Cod_ProdServ, tbl_rot_vendas.Cod_formaRetiradaEstoque, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendas.VendaFinalizada_vendas
+HAVING (((tbl_rot_vendas.Cod_formaRetiradaEstoque)=3) And ((tbl_rot_vendas.Dt_Hr_venda) Between (tbl_rot_vendas.Dt_Hr_venda)>=DLookUp("data_receitasprevistas","tbl_fluxo_ReceitasPrevistas") And Formulários!Frm_MenuPrinc!txtDataEst+1) And ((tbl_rot_vendas.VendaFinalizada_vendas)=Yes));

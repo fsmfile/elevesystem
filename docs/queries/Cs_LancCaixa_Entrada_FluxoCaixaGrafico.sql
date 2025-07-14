@@ -1,0 +1,4 @@
+SELECT DateSerial(Year([dtmovimento_lanccaixa]),Month([dtmovimento_lanccaixa]),Day([dtmovimento_lanccaixa])) AS Dt_Hr_vend, Sum(tbl_rot_LancCaixa.Valor_LancCaixa) AS [Valor Entrada], Sum(0) AS [Valor Saída], "Receita" AS Tipo
+FROM tbl_rot_LancCaixa INNER JOIN TMP_formasPagamento ON tbl_rot_LancCaixa.CodFormaPag_LancCaixa = TMP_formasPagamento.Cod_formasPagamento
+GROUP BY DateSerial(Year([dtmovimento_lanccaixa]),Month([dtmovimento_lanccaixa]),Day([dtmovimento_lanccaixa])), "Receita", tbl_rot_LancCaixa.Tipo_LancCaixa, TMP_formasPagamento.Permitido_FormaPagamento
+HAVING (((DateSerial(Year([dtmovimento_lanccaixa]),Month([dtmovimento_lanccaixa]),Day([dtmovimento_lanccaixa]))) Between [Formulários]![Frm_totalporvendaporperiodo]![TxtDtInicial] And [Formulários]![Frm_totalporvendaporperiodo]![TxtDtFinal]+1) AND ((tbl_rot_LancCaixa.Tipo_LancCaixa)="crédito") AND ((TMP_formasPagamento.Permitido_FormaPagamento)=Yes));

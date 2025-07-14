@@ -1,0 +1,4 @@
+INSERT INTO TMP_planocontas_Entrada ( codAut_PlanoContas, Categoria_PlanoContas, Nome_PlanoContas, Ativo_PlanoContas )
+SELECT tbl_cad_Planocontas.codAut_PlanoContas, tbl_cad_Planocontas.Categoria_PlanoContas, tbl_cad_Planocontas.Nome_PlanoContas, tbl_cad_Planocontas.Ativo_PlanoContas
+FROM tbl_cad_Planocontas
+WHERE (((tbl_cad_Planocontas.Categoria_PlanoContas)<>'Despesas Administrativas' And (tbl_cad_Planocontas.Categoria_PlanoContas)<>'Caixa' And (tbl_cad_Planocontas.Categoria_PlanoContas)<>'Despesas Com Vendas' And (tbl_cad_Planocontas.Categoria_PlanoContas)<>'Despesas Financeiras' And (tbl_cad_Planocontas.Categoria_PlanoContas)<>'Despesas Administrativas Loja' And (tbl_cad_Planocontas.Categoria_PlanoContas)<>'Despesas Administrativas pessoal' And (tbl_cad_Planocontas.Categoria_PlanoContas)<>'DESPESAS OPERACIONAIS'));

@@ -1,0 +1,5 @@
+SELECT tbl_VendasDET_NRSerie.CodVendaNrSerie, tbl_VendasDET_NRSerie.Cod_NrSerie_CVNS
+FROM tbl_VendasDET_NRSerie;
+
+UNION ALL SELECT tbl_rot_MovEstoque_Prod.CodProdMovEst, tbl_rot_MovEstoque_Prod.NS_Prod_PME_SAIDA
+FROM tbl_rot_MovEstoque_Prod;

@@ -1,0 +1,2 @@
+SELECT tbl_rot_LancCaixa.Cod_LancCaixa
+FROM tbl_rot_LancCaixa;

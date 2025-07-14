@@ -1,0 +1,2 @@
+SELECT tbl_cad_veiculos.Cod_veiculo, tbl_cad_veiculos.Fabricante_veiculo, tbl_cad_veiculos.Modelo_veiculo, tbl_cad_veiculos.Cor_veiculo, tbl_cad_veiculos.Placa_veiculo_br, tbl_rot_OrdemServico.Cod_prodServ, tbl_rot_OrdemServico.Cod_Vendas, tbl_rot_OrdemServico.NomeCliente_OrdemServico
+FROM (tbl_cad_veiculos INNER JOIN tbl_rot_OrdemServico ON tbl_cad_veiculos.Cod_veiculo = tbl_rot_OrdemServico.Cod_veiculo) INNER JOIN tbl_rot_vendas ON tbl_rot_OrdemServico.Cod_Vendas = tbl_rot_vendas.Cod_venda;

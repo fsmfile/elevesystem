@@ -1,0 +1,204 @@
+Query;First line
+"""Estorno""";SELECT tbl_cad_forma_retiradaEstoque.forma_retiradaEstoque, tbl_cad_forma_retiradaEstoque.cod_retiradaEstoque
+CARGA_CORPO_NFE;"SELECT Municípios.codIBGEuf AS ide_cUF, ""Venda"" AS ide_natOp, 0 AS ide_indPag, 55 AS ide_mod, tbl_rot_vendas.cod_venda AS ide_nNF, tbl_rot_vendas.Dt_H"
+CARGA_ITENS_NFE;INSERT INTO NFe_Itens ( det_nItem, prod_cProd, prod_xProd, prod_NCM, prod_CFOP, prod_uCOM, prod_qCOM, prod_vUnCOM, prod_vProd, prod_uTrib, prod_vUnTri
+CONSULTA_CALENDARIO_DATAS;"SELECT [cod_ordemservico] & "" "" & [HrInicial_Agenda] AS InputText, tbl_Agenda.ID"
+Consulta1;SELECT cst_LancCaixa_Credito.Valorcredito AS ValorCredito, cst_LancCaixa_Debito.Valordebito AS ValorDebito, tbl_rot_LancCaixa.Descricao_LancCaixa, tbl
+Consulta2;SELECT Cs_LancCaixa_Entrada_FluxoCaixa.Dt_Hr_vend, Cs_LancCaixa_Entrada_FluxoCaixa.[Valor Entrada], Cs_LancCaixa_Entrada_FluxoCaixa.[Valor Saída], Cs_
+Consulta3;INSERT INTO TMP_planocontas_Entrada ( codAut_PlanoContas, Categoria_PlanoContas, Nome_PlanoContas, Ativo_PlanoContas )
+Cs_AbrirOrdemServico_EmVendas;SELECT tbl_rot_OrdemServico.Cod_OrdemServico, tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_rot_OrdemServico.UsuarioSistema, tbl_rot_OrdemServi
+Cs_AgendaDia;"SELECT IIf(IsNull([Cod_OrdemServico] & [tbl_rot_tarefas]![ID]),[dtagenda] & "" "" & [HrInicial_Agenda] & "" | LIVRE"",IIf(IsNull([Cod_OrdemServico]),[dtag"
+Cs_Agendamento;"SELECT IIf(IsNull([Cod_OrdemServico]),""Cod Tarefa: "" & [tbl_rot_tarefas]![ID] & "" "" & [HrInicial_Agenda],""Cod O.S: "" & [Cod_OrdemServico] & "" "" & [HrI"
+Cs_Agendamento_semCancel;SELECT tbl_Agendamento.Cod_OrdemServico_Agendamento, tbl_Agendamento.Cod_Tarefas_Agendamento, tbl_Agendamento.CodFuncAgendou_Agendamento, tbl_Agendame
+Cs_AgrupaPagLPPO;SELECT tbl_rot_PagFornecedor_contasApagar.codContasApagarDET, tbl_rot_PagFornecedor_contasApagar.FormaPagPagForn_CP, Sum(tbl_rot_PagFornecedor_contasA
+Cs_AlertaCompra;SELECT Cs_Estoque.Cod_ProdServ, tbl_cad_prodserv.SubGrupo_prodserv, tbl_cad_prodserv.Nome_prodServ, Cs_Estoque.[Total em estoque], tbl_cad_prodserv.Es
+Cs_AlertaVendaAbaixo;"SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_cad_prodserv.Cod_ProdServ AS [Cód Prod], [subgrupo_prodserv] & "" "" & [nome_"
+Cs_AlterarInventario;SELECT TMP_Estoque.Cod_ProdServ AS CodProd, tbl_cad_prodserv.SubGrupo_prodserv AS SubGrupo, tbl_cad_prodserv.Nome_prodServ AS Descrição, TMP_Estoque.[
+Cs_AlterarInventario_Entrada;INSERT INTO Tbl_cad_comprasDetalhadas ( Cod_ProdServ, Quantidade_ComprasDet, Cod_compras )
+Cs_AuditoriaFaturamentoCaixa;"SELECT tbl_rot_vendas.Cod_venda, Cs_TotalPorVenda.TotalPorVenda, Cs_VendatotalFormaPagamento.TotalFaturado, IIf([TotalFaturado]<[totalporvenda],""Alert"
+Cs_Cad_clientes_credito;SELECT tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente, tbl_
+Cs_ChequeTotalPorBanco;SELECT tbl_data.Data, tbl_cad_cheque.Valor_cheque, tbl_cad_cheque.Banco_cheque
+Cs_ClienteFLM;SELECT Last(tbl_cad_ClientesFLM.NomeDropBox) AS ÚltimoDeNomeDropBox
+Cs_Clientes_Debito;"SELECT [NomeRazaoSocial_Cliente] & "" "" & [telefone_cliente] AS Cliente, tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes"
+Cs_clientes_Debito_det;SELECT tbl_rot_contasareceber.CodCliente_contasReceber, tbl_rot_contasareceber.Cod_contasAreceber, tbl_rot_contasareceber.CodVenda_contasReceber, tbl_
+Cs_Clientes_Limitedisponivel;SELECT Cs_Clientes_Saldo_Credito.Cod_cliente AS Expr1, Cs_Clientes_Saldo_Credito.SaldoDevedor AS Expr2, Cs_Clientes_Saldo_Credito.SaldoCredito AS Expr
+Cs_Clientes_Quitados;"SELECT [NomeRazaoSocial_Cliente] & "" "" & [telefone_cliente] AS Cliente, tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes"
+Cs_Clientes_Saldo_Credito;SELECT tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.Apelido_cliente, tbl_cad_clientes.TipoDocumento, tbl_c
+Cs_ClientesPlanoMensalCompleto;"SELECT [Categoria_PlanoContas] & "" "" & [Nome_PlanoContas] AS Plano, tbl_Prodserv_Promocao.CodPromocao, tbl_cad_clientes.Cod_cliente, ""Titular"" AS Tipo"
+Cs_ClientesVinculados;SELECT tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.TipoDocumento, tbl_cad_clientes.CPF_CNPJ_Cliente, tbl_cad_clientes.Vinculo_cliente, 
+Cs_CodLancCaixa;SELECT tbl_rot_LancCaixa.Cod_LancCaixa
+Cs_comissao;"SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_cad_prodserv.Cod_ProdServ, tbl_cad_prodserv.Grupo_prodServ, [subgrupo_prodserv] & "" """
+Cs_comissao_OrdemServico;"SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_cad_prodserv.Cod_ProdServ, tbl_cad_prodserv.Grupo_prodServ, [subgrupo_prodserv] & "" """
+cs_ComissaoPorComissionista;SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS [Total de Venda do Dia], Cs_comissao.Nome_funcionario, Cs_comissao.G
+cs_ComissaoPorComissionista_ordemServico;SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS [Total de Venda do Dia], Cs_comissao_OrdemServico.Nome_funcionario, 
+Cs_comissaoPorComissionistaDATA;SELECT cs_ComissaoPorComissionista.[Total de Venda do Dia], cs_ComissaoPorComissionista.Nome_funcionario, cs_ComissaoPorComissionista.Grupo_comissioni
+Cs_Comissionista;SELECT tbl_cad_comissionista.Cod_comissionista, tbl_cad_funcionarios.Nome_funcionario AS [Nome do Func], tbl_cad_funcionarios.mat_funcionario, tbl_cad
+Cs_ComissionistaDaOrdemServico;SELECT tbl_detalhesOrdemServico.Cod_OrdemServico, tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_cad_funcionarios.Nome_funcionario, [Subgrupo_pr
+Cs_ComparativoClientePorFormaPag;TRANSFORM Sum(tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVendasDet) AS SomaDeValor_FormaPagVendasDet
+Cs_ComparativoClientePorValorVenda;"SELECT Month([Dt_Hr_venda]) & ""/"" & Year([Dt_Hr_venda]) AS Data, [NomeRazaoSocial_Cliente] & "" "" & [telefone_cliente] AS Cliente, Sum(tbl_cad_formasPa"
+Cs_ComparaVendedores;"SELECT IIf(IsNull([Nome_funcionario]),""Outros"",[Nome_funcionario]) AS Vendedor, Sum([quantidade_vendasdet]*[valor_unitario_vendasdet]) AS ValorTotalVe"
+Cs_ComprasEstoque;SELECT tbl_cad_compras.cod_compras, tbl_cad_compras.DtEmissao_compras, tbl_cad_compras.Cod_Fornecedor, tbl_cad_compras.NumeroPedido_compras, tbl_cad_p
+Cs_ConfigBasica;SELECT tbl_ConfigBasica.CodConfigBasica, tbl_ConfigBasica.Configuracao, tbl_ConfigBasica.Descricao, tbl_ConfigBasica_Permissoes.SimNao, tbl_ConfigBasi
+Cs_ConfigBe;SELECT tbl_cad_ClientesFLM.CodCliente_FLM, tbl_cad_ClientesFLM.NomeDropBox, tbl_cad_ClientesFLM.NomeAmigavel
+Cs_ContasPagarUsuario;SELECT tbl_VendasDetKitProd_NRSerie.CodVendasDETKitProd_CVDKit AS CodOperacao, tbl_VendasDetKitProd_NRSerie.Cod_NrSerie_CVDKit AS CodCP, tbl_VendasDet
+Cs_ContasReceber_SaldoCaixa;SELECT TMP_ContasReceber_Saldo_Individual.ValorPago, TMP_ContasReceber_Saldo_Individual.Juros, TMP_ContasReceber_Saldo_Individual.Desconto, TMP_Contas
+Cs_ContasReceberMensal;SELECT tbl_rot_contasareceber.Cod_contasAreceber, tbl_rot_contasareceber.DtVencimento_contasReceber, tbl_rot_contasareceber.ValorTotal_ContasReceber, 
+Cs_ContasReceberUsuario;SELECT tbl_VendasDetKitProd_NRSerie.CodVendasDETKitProd_CVDKit AS CodOperacao, tbl_VendasDetKitProd_NRSerie.Cod_NrSerie_CVDKit AS CodCR, tbl_VendasDet
+Cs_ControlePlanoConta_Compilado;SELECT tbl_cad_Planocontas.Nome_PlanoContas, Sum(Nz([Valor3],0)) AS Valor_3, Sum(Nz([Valor4],0)) AS Valor_4
+Cs_ControlePlanoConta3;SELECT tbl_cad_Planocontas.codAut_PlanoContas, tbl_cad_Planocontas.Nome_PlanoContas, Sum(Nz([Valor_LancCaixa],0)) AS Valor3
+Cs_ControlePlanoConta4;SELECT tbl_cad_Planocontas.Nome_PlanoContas, Sum(Nz([Valor_LancCaixa],0)) AS Valor4
+Cs_ControlePonto;SELECT tbl_cad_funcionarios.mat_funcionario, tbl_cad_funcionarios.Nome_funcionario, [cs_RegPonto1]![Data] AS 1Data, cs_RegPonto1.Hora AS 1Hora, [cs_Re
+Cs_ControleTroco;SELECT tbl_salario_funcionario.Mat_funcionario, Last(tbl_salario_funcionario.DtSalario_funcionario) AS DtSalario_funcionario, Sum(tbl_salario_funciona
+Cs_corrigeAPRAZO;UPDATE tbl_rot_contasareceber LEFT JOIN (tbl_rot_vendas LEFT JOIN tbl_cad_clientes ON tbl_rot_vendas.Cod_cliente = tbl_cad_clientes.Cod_cliente) ON tb
+Cs_CriarTblSemVinculo;SELECT Cs_VendasDetSemVinculo.Cod_venda INTO TMP_CodVendaSemVinculo
+Cs_DebitoPagCli_DEVEDOR;SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(tbl_rot_ContasReceber_det.ValorParc_ContasReceberDET) AS SomaDeValorParc_ContasReceberDET
+Cs_DebitoPagCli_PAGO;SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(Nz([ValorPagoPagCli_CR],0)) AS ValorPago, Sum(Nz([JurosPagCli_CR],0)) AS Juros, Sum(Nz([Des
+Cs_DebitoPagCli_PAGO_hoje;SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(Nz([ValorPagoPagCli_CR],0)) AS ValorPago, Sum(Nz([JurosPagCli_CR],0)) AS Juros, Nz([Descont
+Cs_Delete_TMP_ContasReceber;DELETE TMP_ContasReceber_Saldo_Individual.*
+Cs_DespesaPorPeriodo;SELECT DateSerial(Year([dtMovimento_LancCaixa]),Month([dtMovimento_LancCaixa]),Day([dtMovimento_LancCaixa])) AS Dt_Hr_vend, Sum(0) AS [Valor Entrada],
+Cs_DespesaPorPeriodo_completo;"SELECT tbl_data.Data, Nz([Valor Entrada],0) AS ValorEntrada, Nz([Valor Saída],0) AS ValorSaída, ""Despesa"" AS Tipo"
+Cs_DespesaPorPeriodo_filtro;SELECT DateSerial(Year([dtMovimento_LancCaixa]),Month([dtMovimento_LancCaixa]),Day([dtMovimento_LancCaixa])) AS Dt_Hr_vend, Sum(0) AS [Valor Entrada],
+Cs_DetalhesDespesas_FluxoCaixa;SELECT cst_LancCaixa_Credito.Valorcredito AS ValorCredito, cst_LancCaixa_Debito.Valordebito AS ValorDebito, tbl_rot_LancCaixa.Descricao_LancCaixa, tbl
+Cs_DetalhesFormaPagamento;"SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, [NomeRazaoSocial_Cliente] & "" "" & [telefone_cliente] AS Cliente, tbl_cad_formasPagamento."
+Cs_DetalhesVendasProd;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendasDetalhadas.Cod_produto, Sum(tbl_rot_vendasDetalhadas.Quantidade_VendasDet) 
+Cs_DiferencaDeCaixa;SELECT tbl_rot_SaldoAno.Cod_SaldoAno AS CodDifCaixa, tbl_rot_SaldoAno.Ano_SaldoAno AS DataDifCaixa, tbl_rot_SaldoAno.Valor_SaldoAno AS ValorDifCaixa, 
+Cs_EmprestimoEstoque;SELECT tbl_cad_prodserv.Cod_ProdServ, IIf(Sum([Quantidade_VendasDet]),Sum([Quantidade_VendasDet]),0) AS EmprestimoEstoque, tbl_rot_vendas.Cod_formaRet
+Cs_Estoque;SELECT tbl_cad_prodserv.Cod_ProdServ, tbl_cad_prodserv.SubGrupo_prodserv, tbl_cad_prodserv.Nome_prodServ AS Descrição, cs_somaCompras.SomaDeQtdComprad
+Cs_Estorno;"SELECT ""Cod:"" & [tbl_rot_vendas]![Cod_venda] & ""| DtHr:"" & [Dt_Hr_venda] & ""| Val:"" & [DtValidadeOrcamento] & ""| Valor:"" & [Cs_SomaValorPagVenda_semfi"
+Cs_fila_Caixa;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Cod_comissionista_G1, tbl_rot_vendas.OptionVenda_venda AS Expr1, tbl_rot_vendas.OptionOrcamento_venda,
+Cs_Fila_OrdemServico;SELECT tbl_rot_OrdemServico.Cod_OrdemServico, tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_rot_OrdemServico.NomeCliente_OrdemServico, tbl_rot_
+Cs_Fila_OrdemServico_Cliente;SELECT tbl_rot_OrdemServico.Cod_OrdemServico, tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_rot_OrdemServico.NomeCliente_OrdemServico, tbl_rot_
+Cs_fila_Vendas;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.Apelido_cliente, tbl_rot_venda
+Cs_fila_Vendas_gestao;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendas.Cod_cliente, tbl_rot_vendas.Grupo_vendas, tbl_rot_vendas.VendaFinalizada_v
+Cs_FilaComissionista;SELECT tbl_rot_OrdemServico.Cod_OrdemServico, tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_rot_OrdemServico.NomeCliente_OrdemServico, tbl_rot_
+Cs_FilaVendedores;SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_cad_clientes.NomeRazaoSocial_Cliente AS Cliente, tbl_cad_forma_retiradaEsto
+Cs_FluxoCaixaPrincipal;SELECT tbl_data.data AS Dt_Hr_vend, CCur([Entrada]) AS [Valor Entrada], CCur([Cs_DespesaPorPeriodo_completo].[ValorSaída]) AS [Valor Saída], [Cs_Recei
+Cs_ForEach_PlanoMensal;SELECT Last(Cs_ContasReceberMensal.Cod_contasAreceber) AS Cod_contasAreceber, Last(Cs_ContasReceberMensal.DtVencimento_contasReceber) AS DtVencimento_
+Cs_Fornecedores;SELECT tbl_cad_fornecedor.Cod_fornecedor, tbl_cad_fornecedor.Tipo_Pessoa_fornecedor, tbl_cad_fornecedor.Nome_fornecedor, tbl_cad_fornecedor.Celular_fo
+cs_GrupoComissionista;SELECT tbl_cad_grupo_comissionista.Cod_Grupo_comissionista, tbl_cad_grupo_comissionista.Grupo_comissionista, tbl_cad_grupo_comissionista.Descricao_gru
+Cs_GrupoPadraoVendas;SELECT Last(tbl_cad_GrupoSistema.cod_grupoUsuario) AS cod
+Cs_GruposSistema_ParaVenda;SELECT tbl_cad_GrupoSistema.Grupo_grupoUsuario, tbl_cad_GrupoSistema.cod_grupoUsuario
+Cs_GrupoSubGrupo_Produto;SELECT tbl_cad_grupo_prodserv.cod_tipo_prodServ, tbl_cad_prodserv.Nome_prodServ, tbl_cad_grupo_prodserv.Grupo_prodServ, tbl_cad_grupo_prodserv.Subgrup
+Cs_HistoricoPagamentoContasReceberCLIENTE;SELECT tbl_rot_contasareceber.Cod_contasAreceber, tbl_rot_contasareceber.CodCliente_contasReceber, tbl_rot_ContasReceber_det.cod_ContasReceberDET, tbl
+Cs_LancCaixa_Entrada_FluxoCaixa;SELECT DateSerial(Year([dtmovimento_lanccaixa]),Month([dtmovimento_lanccaixa]),Day([dtmovimento_lanccaixa])) AS Dt_Hr_vend, Sum(tbl_rot_LancCaixa.Valo
+Cs_LancCaixa_Entrada_FluxoCaixaGrafico;SELECT DateSerial(Year([dtmovimento_lanccaixa]),Month([dtmovimento_lanccaixa]),Day([dtmovimento_lanccaixa])) AS Dt_Hr_vend, Sum(tbl_rot_LancCaixa.Valo
+Cs_LancCaixa_TotalPorPlanodeContas;SELECT tbl_rot_LancCaixa.PlanoConta_LancCaixa, Sum(tbl_rot_LancCaixa.Valor_LancCaixa) AS [Total em Valor], tbl_rot_LancCaixa.DtMovimento_LancCaixa
+Cs_LancCaixa_Venda;SELECT tbl_rot_MovEstoque.CodVenda_RetiradaEst, tbl_rot_LancCaixa.Cod_LancCaixa, tbl_rot_LancCaixa.DtMovimento_LancCaixa, tbl_rot_LancCaixa.Tipo_LancC
+cs_liberarEstoque;SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.Cod_ProdServ, tbl_rot_vendasDetalhadas.Quantidade_VendasDet, tbl_NrSerie_Prod.NumeroSerieP
+CS_listaFunCli;SELECT tbl_cad_clientes.NomeRazaoSocial_Cliente, tbl_cad_clientes.Cod_cliente, tbl_cad_clientes.IsentoICMS FROM tbl_cad_clientes GROUP BY tbl_cad_clie
+Cs_ListaProdutos;SELECT tbl_cad_prodserv.Nome_prodServ, tbl_cad_prodserv.Cod_ProdServ
+Cs_Minhascomissoes;"SELECT tbl_rot_vendas.Dt_Hr_venda, [subgrupo_prodserv] & "" "" & [nome_prodserv] AS [Produto ou Serviço], tbl_rot_vendasDetalhadas.Valor_unitario_vendas"
+Cs_MovEst_Entradas;SELECT tbl_cad_prodserv.Cod_ProdServ, Count(Cs_MovEstoque_Ent.CodProd_PME_ENTRADA) AS ContarDeCodProd_PME_ENTRADA
+Cs_MovEst_Entradas_curvaProd;"SELECT tbl_cad_prodserv.Cod_ProdServ, Count(Cs_MovEstoque_Ent.CodProd_PME_ENTRADA) AS ContarDeCodProd_PME_ENTRADA, IIf(IsNull([codprod_pme_entrada]),"""
+Cs_MovEst_Saidas;SELECT tbl_cad_prodserv.Cod_ProdServ, Count(Cs_MovEstoque.CodProd_PME_SAIDA) AS ContarDeCodProd_PME_SAIDA
+Cs_MovEst_Saidas_curvaProd;"SELECT tbl_cad_prodserv.Cod_ProdServ, Count(Cs_MovEstoque.CodProd_PME_SAIDA) AS ContarDeCodProd_PME_SAIDA, IIf(IsNull([codprod_pme_saida]),"""",DateSeri"
+Cs_MovEstoque;SELECT tbl_rot_MovEstoque.CodVenda_RetiradaEst, tbl_rot_MovEstoque.CodRetiradaEst, tbl_rot_MovEstoque_Prod.CodProd_PME_ENTRADA, tbl_cad_prodserv_1.Nom
+Cs_MovEstoque_Alteracao;SELECT tbl_rot_MovEstoque.CodRetiradaEst, tbl_rot_MovEstoque.dtHrRetiradaEst, tbl_rot_MovEstoque.FormaRetiradaEst, tbl_rot_MovEstoque.CodVenda_Retirad
+Cs_MovEstoque_Ent;SELECT tbl_rot_MovEstoque.CodVenda_RetiradaEst, tbl_rot_MovEstoque.CodRetiradaEst, tbl_rot_MovEstoque_Prod.CodProd_PME_ENTRADA, tbl_rot_MovEstoque_Pro
+Cs_MovEstoqueVenda;SELECT tbl_rot_MovEstoque.CodVenda_RetiradaEst, tbl_rot_MovEstoque.CodRetiradaEst, tbl_rot_MovEstoque.dtHrRetiradaEst, tbl_cad_forma_retiradaEstoque.f
+cs_numform;SELECT tbl_cad_formHiperlink.Cod_CadForm, tbl_cad_formHiperlink.Hiperlink_CadForm
+Cs_OrcamentosLimpar;SELECT tbl_rot_vendas.Cod_venda, Sum(Nz([Valor_FormaPagVendasDet],0)) AS Total
+Cs_OrcamentosSalvos;"SELECT ""Cod:"" & [tbl_rot_vendas]![Cod_venda] & ""| DtHr:"" & [Dt_Hr_venda] & ""| Val:"" & [DtValidadeOrcamento] & ""| Valor:"" & [Cs_SomaValorPagVenda_semfi"
+Cs_OrdemServicoFinalizadas;SELECT tbl_rot_OrdemServico.Cod_OrdemServico AS [Cód OS], tbl_rot_OrdemServico.DtHr_Abertura_OrdemServico, tbl_rot_OrdemServico.NomeCliente_OrdemServi
+cs_OSreabertaPorVeiculo;"SELECT tbl_ReaberturaOrdemServico.Cod_OrdemServico, [subgrupo_prodserv] & "" "" & [nome_prodserv] AS NomeServ, tbl_ReaberturaOrdemServico.DtHrReabertura"
+Cs_padraoNota;SELECT tbl_cad_lojas.razao_loja, tbl_cad_lojas.CNPJ_loja, tbl_cad_lojas.PadraoParaNotas
+Cs_Pag_Parc_Debito_Cliente;SELECT tbl_rot_PagCli_contasReceber.codPagCli_CR, tbl_rot_PagCli_contasReceber.codContasReceberDET, tbl_rot_PagCli_contasReceber.DataPag_ContasReceber
+Cs_PagClicontasReceber;SELECT tbl_rot_PagCli_contasReceber.codPagCli_CR, tbl_rot_PagCli_contasReceber.codContasReceberDET, tbl_rot_PagCli_contasReceber.DataPag_ContasReceber
+Cs_PermissoesAcaoVendas;SELECT Cs_Resumo_HierarquiaGrupos.login_usuarioSistema, Cs_Resumo_HierarquiaGrupos.Grupo_grupoUsuario, Cs_Resumo_HierarquiaGrupos.Cod_GrupoSistemaABAI
+Cs_PermissoesAlertas;SELECT Cs_Resumo_HierarquiaGrupos.login_usuarioSistema, Cs_Resumo_HierarquiaGrupos.Grupo_grupoUsuario, Cs_Resumo_HierarquiaGrupos.Cod_GrupoSistemaABAI
+Cs_PermissoesFila_Vendas;SELECT Cs_Resumo_HierarquiaGrupos.login_usuarioSistema, Cs_Resumo_HierarquiaGrupos.Grupo_grupoUsuario, Cs_Resumo_HierarquiaGrupos.Cod_GrupoSistemaABAI
+Cs_PermissoesSistema;SELECT Cs_Resumo_HierarquiaGrupos.login_usuarioSistema, Cs_Resumo_HierarquiaGrupos.Grupo_grupoUsuario, Cs_Resumo_HierarquiaGrupos.Cod_GrupoSistemaABAI
+Cs_PlanoDeContas;SELECT tbl_cad_Planocontas.codAut_PlanoContas, tbl_cad_Planocontas.Categoria_PlanoContas, tbl_cad_Planocontas.Nome_PlanoContas, tbl_cad_Planocontas.De
+Cs_PlanoMensalATIVO;SELECT tbl_rot_contasareceber.Cod_contasAreceber, tbl_rot_contasareceber.DtVencimento_contasReceber, tbl_rot_contasareceber.ValorTotal_ContasReceber, 
+Cs_prodServ;SELECT tbl_cad_prodserv.Cod_ProdServ, tbl_cad_prodserv.Ref_prodserv, tbl_cad_prodserv.Grupo_prodServ, tbl_cad_prodserv.SubGrupo_prodserv, tbl_cad_prod
+Cs_ProdServ_QtdVend;SELECT tbl_cad_prodserv.Cod_ProdServ AS CodProd, tbl_cad_prodserv.Grupo_prodServ, tbl_cad_prodserv.SubGrupo_prodserv, tbl_cad_prodserv.nome_prodserv A
+Cs_ProdUtilizados_NS_Serie;SELECT tbl_VendasDET_NRSerie.CodVendaNrSerie, tbl_VendasDET_NRSerie.Cod_NrSerie_CVNS
+cs_produtoscompras_subformulario;"SELECT Tbl_cad_comprasDetalhadas.Cod_compras AS [Cód Compras], Tbl_cad_comprasDetalhadas.Cod_ProdServ AS CódProd, [subgrupo_prodserv] & "" "" & [nome_pr"
+Cs_ProdutosDefeituosos;SELECT tbl_rot_MovEstoque.CodRetiradaEst, tbl_rot_MovEstoque.dtHrRetiradaEst, tbl_rot_MovEstoque.FormaRetiradaEst, tbl_rot_MovEstoque.StatusMovEstoque
+Cs_ProdutoServico;SELECT tbl_cad_prodserv.Cod_ProdServ, tbl_cad_prodserv.Grupo_prodServ, tbl_cad_prodserv.SubGrupo_prodserv, tbl_cad_prodserv.Nome_prodServ, tbl_cad_pro
+Cs_Promocao;SELECT tbl_ProdServ_promDET.*, tbl_Prodserv_Promocao.grupo_Promocao, tbl_Prodserv_Promocao.Porcentagem_promocao, tbl_Prodserv_Promocao.QtdVenda_promoc
+Cs_PromocaoAcrescimo;SELECT tbl_cad_prodserv.Cod_ProdServ, tbl_Prodserv_Promocao.grupo_Promocao, Sum(tbl_Prodserv_Promocao.Porcentagem_promocao) AS SomaDePorcentagem_promo
+Cs_ReceitaPorPeriodo;SELECT Cs_VendasPorPeriodo_FluxoCaixa.Dt_Hr_vend, Cs_VendasPorPeriodo_FluxoCaixa.[Valor Entrada], Cs_VendasPorPeriodo_FluxoCaixa.[Valor Saída], Cs_Ven
+Cs_ReceitaPorPeriodo_filtro;SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS Dt_Hr_vend, Sum(tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVenda
+Cs_ReceitaPorPeriodo_Total;SELECT Cs_ReceitaPorPeriodo.Dt_Hr_vend, Sum(Cs_ReceitaPorPeriodo.[Valor Entrada]) AS [SomaDeValor Entrada], Cs_ReceitaPorPeriodo.[Valor Saída], Cs_Rec
+Cs_ReceitaPorPeriodo_total_Completo;"SELECT tbl_data.Data, Nz([SomaDeValor Entrada],0) AS Entrada, Nz([Valor Saída],0) AS ValorSaída, ""Receita"" AS Tipo"
+Cs_Receitas_FluxoCaixaGrafico;TRANSFORM Sum(Cs_ReceitaPorPeriodo_filtro.[Valor Entrada]) AS [SomaDeValor Entrada]
+cs_RegPonto1;SELECT tbl_cad_funcionarios.mat_funcionario, tbl_cad_funcionarios.Nome_funcionario, tbl_cad_funcionarios.CPF_funcionario, [ID_EXTERNO_TIPOREGPONTO] & 
+cs_RegPonto2;SELECT tbl_cad_funcionarios.mat_funcionario, tbl_cad_funcionarios.Nome_funcionario, tbl_cad_funcionarios.CPF_funcionario, [ID_EXTERNO_TIPOREGPONTO] & 
+cs_RegPonto3;SELECT tbl_cad_funcionarios.mat_funcionario, tbl_cad_funcionarios.Nome_funcionario, tbl_cad_funcionarios.CPF_funcionario, [ID_EXTERNO_TIPOREGPONTO] & 
+cs_RegPonto4;SELECT tbl_cad_funcionarios.mat_funcionario, tbl_cad_funcionarios.Nome_funcionario, tbl_cad_funcionarios.CPF_funcionario, [ID_EXTERNO_TIPOREGPONTO] & 
+Cs_Resumo_HierarquiaGrupos;SELECT tbl_cad_GrupoSistema.cod_grupoUsuario, tbl_cad_GrupoSistema.Grupo_grupoUsuario, tbl_cad_hierarquiaGruposSistema.cod_hierarquia, tbl_cad_hierarq
+Cs_Resumo_HierarquiaGrupos_VENDAS;SELECT tbl_cad_GrupoSistema.cod_grupoUsuario, tbl_cad_GrupoSistema.Grupo_grupoUsuario, tbl_cad_hierarquiaGruposSistema.cod_hierarquia, tbl_cad_hierarq
+cs_SaldoCaixaSubform_Individual;SELECT tbl_rot_LancCaixa.Cod_LancCaixa, cst_LancCaixa_Credito.Valorcredito AS ValorCredito, cst_LancCaixa_Debito.Valordebito AS ValorDebito, tbl_rot_L
+Cs_saldodevedor_debito_ContasReceber;SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(Cs_DebitoPagCli_DEVEDOR.SomaDeValorParc_ContasReceberDET) AS SomaDeSomaDeValorParc_ContasRe
+Cs_saldodevedor_saldoCredito;SELECT tbl_rot_ContasReceber_det.cod_ContasReceberDET, Sum(Cs_DebitoPagCli_DEVEDOR.SomaDeValorParc_ContasReceberDET) AS SomaDeSomaDeValorParc_ContasRe
+Cs_Soma_TempoOrdemServico;SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.Tempo_atendServ_prodServ
+cs_somaCompras;SELECT tbl_cad_prodserv.Cod_ProdServ, Sum(Cs_ComprasEstoque.QtdComprada) AS SomaDeQtdComprada
+cs_somaCompras_CurvaProd;SELECT tbl_cad_prodserv.Cod_ProdServ, Sum(Cs_ComprasEstoque.QtdComprada) AS SomaDeQtdComprada, Cs_ComprasEstoque.DtEmissao_compras AS DataCompra
+cs_SomaProdutosRelacionados;SELECT tbl_cad_prodserv.Cod_ProdServ, Sum(IIf([Quantidade_ProdutoDet]*[valor_produtodet],[Quantidade_ProdutoDet]*[valor_produtodet],0)) AS TotalProdSe
+Cs_SomaValorPagVenda;SELECT tbl_cad_formasPagamentoVENDASDET.Cod_FormasPagVendasDet, tbl_cad_formasPagamentoVENDASDET.Historico_formasPagVendasDet, tbl_cad_formasPagamento
+Cs_SomaValorPagVenda_semfiltro;SELECT tbl_rot_vendasDetalhadas.Cod_venda, Sum([quantidade_vendasdet]*[Valor_unitario_vendasDet]) AS Soma
+Cs_Subformulario_prodServRel;SELECT tbl_cad_produtoDetalhado.Cod_ProdutoDet, tbl_cad_produtoDetalhado.Cod_ProdServ, tbl_cad_produtoDetalhado.ProdRelacionado_produtoDet, tbl_cad_pr
+cs_tbl_prodserv;SELECT tbl_cad_prodserv.Cod_ProdServ, tbl_cad_prodserv.Grupo_prodServ, tbl_cad_prodserv.SubGrupo_prodserv, tbl_cad_prodserv.Nome_prodServ, tbl_cad_pro
+Cs_TblCaixa;SELECT tbl_caixa.codCaixa, DateSerial(Year([dtcaixa]),Month([dtcaixa]),Day([dtcaixa])) AS DataCaixa
+Cs_TblCaixa_Individual;SELECT tbl_caixa.codCaixa, DateSerial(Year([dtcaixa]),Month([dtcaixa]),Day([dtcaixa])) AS DataCaixa, tbl_caixa.Cod_caixa AS MatFunc, tbl_caixa.valor_c
+Cs_TelasSistema;SELECT tbl_cad_formHiperlink.Cod_CadForm AS Tela, tbl_processos.Nome_processo, tbl_processosDetalhados.Procedimento, tbl_processosDetalhados.Descricao
+cs_TesteInventario0;SELECT Cs_AlterarInventario.Alterar, Cs_AlterarInventario.[Nova Contagem]
+Cs_TesteRegistroVenda;SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_rot_vendasDetalhadas.Cod_produto, tbl_rot_vendasDetalhadas.Quantidade_VendasDet, tbl_rot_vendasDetalhad
+Cs_TodosLancCaixa;SELECT tbl_rot_LancCaixa.Cod_LancCaixa AS Cod, tbl_rot_LancCaixa.DtMovimento_LancCaixa, cst_LancCaixa_Credito.Valorcredito AS ValorCredito, cst_LancCa
+Cs_TodosLancCaixa_Saldo;SELECT Cs_TodosLancCaixa.Cod AS Expr1, Cs_TodosLancCaixa.DtMovimento_LancCaixa AS Expr2, Cs_TodosLancCaixa.Descricao_LancCaixa AS Expr3, Cs_TodosLancC
+Cs_TodosLancCaixa_subformulario_ind;SELECT TMP_SaldoLancCaixa.Cod_LancCaixa, TMP_SaldoLancCaixa.Valorcredito AS ValorCredito, TMP_SaldoLancCaixa.Valordebito AS ValorDebito, TMP_SaldoLanc
+Cs_totalContasPagasDATA;SELECT tbl_cad_Planocontas.Categoria_PlanoContas, tbl_cad_Planocontas.Nome_PlanoContas, Sum(tbl_rot_PagFornecedor_contasApagar.ValorPagoPagForn_CP) AS
+Cs_totalContasPagasDATA_Individual;SELECT tbl_cad_Planocontas.Categoria_PlanoContas, tbl_cad_Planocontas.Nome_PlanoContas, Sum(tbl_rot_PagFornecedor_contasApagar.ValorPagoPagForn_CP) AS
+cs_TotalContasReceber_Subform;SELECT Sum(Nz([ValorPagoPagCli_CR],0)) AS ValorPago, Sum(Nz([JurosPagCli_CR],0)) AS Juros, Sum(Nz([DescontoPagCli_CR],0)) AS Desconto, Sum(Nz((([Valor
+cs_TotalContasReceber_Subform_Individual;SELECT TMP_ContasReceber_Saldo_Individual.ValorPago, TMP_ContasReceber_Saldo_Individual.Juros, TMP_ContasReceber_Saldo_Individual.Desconto, TMP_Contas
+Cs_totalPorCompras;"SELECT tbl_cad_compras.DtEmissao_compras, [subgrupo_prodserv] & "" "" & [Nome_prodserv] AS NomeProd, [Quantidade_comprasdet]*[Valorunitario_comprasdet] "
+Cs_TotalPorFormaPag;SELECT Cs_DetalhesFormaPagamento.Cod_formasPagamento AS [Forma de Pagamento], Sum(Cs_DetalhesFormaPagamento.Valor_FormaPagVendasDet) AS Total, DateSer
+Cs_TotalPorFormaPagSEMFILTRO;SELECT Cs_DetalhesFormaPagamento.Cod_formasPagamento AS [Forma de Pagamento], Sum(Cs_DetalhesFormaPagamento.Valor_FormaPagVendasDet) AS Total, DateSer
+Cs_TotalPorPlanoPagamento;SELECT tbl_rot_LancCaixa.PlanoConta_LancCaixa, Sum(tbl_rot_LancCaixa.Valor_LancCaixa) AS [Total em Valor], tbl_rot_LancCaixa.DtMovimento_LancCaixa, tb
+Cs_TotalPorVenda;SELECT tbl_rot_vendas.Cod_venda, DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS [Data da Venda], Sum([Quantidade_VendasDet
+Cs_TotalVendas;SELECT Sum(Cs_TotalPorVenda.TotalPorVenda) AS ValorTotalVendas
+Cs_UltimaVersaoBackEnd;SELECT Max(tbl_VersaoBackEnd.Versaobackend) AS ÚltimodeVersaoBackend, Last(tbl_VersaoBackEnd.AtualizacaoCritica) AS ÚltimoDeAtualizacaoCritica
+Cs_UltimaVersaoSistema;SELECT Last(tbl_VersaoSistema.VersaoSistema) AS ÚltimoDeVersaoSistema
+Cs_Update_TMP_ContasReceber;INSERT INTO TMP_ContasReceber_Saldo_Individual ( ValorPago, Juros, Desconto, TotalValorPago, DataPag_ContasReceberDET, Nome_FormaPagamento, DescricaoP
+Cs_Update_TMP_ContasReceber_BKP;INSERT INTO TMP_ContasReceber_Saldo_Individual ( ValorPago, Juros, Desconto, TotalValorPago, DataPag_ContasReceberDET, Nome_FormaPagamento, DescricaoP
+Cs_UsuarioSistema;SELECT tbl_cad_UsuarioSistema.Cod_usuarioSistema, tbl_cad_UsuarioSistema.matFuncionario, tbl_cad_UsuarioSistema.login_usuarioSistema, tbl_cad_GrupoSis
+Cs_Vale;SELECT tbl_rot_vale.cod_vale, tbl_rot_vale.Nome_funcionario, tbl_rot_vale.DtMovimento_vale, tbl_rot_vale.DtCaixa AS Expr1, tbl_rot_vale.Valor_vale, tb
+Cs_Veiculo_OS_Venda;SELECT tbl_cad_veiculos.Cod_veiculo, tbl_cad_veiculos.Fabricante_veiculo, tbl_cad_veiculos.Modelo_veiculo, tbl_cad_veiculos.Cor_veiculo, tbl_cad_veicu
+Cs_VendaAbaixoPreco;"SELECT [subgrupo_prodserv] & "" "" & [nome_prodserv] AS NomeProdServ, [precocusto_prodserv]+([Precocusto_prodserv]*[margemminima_prodserv]) AS ValorMini"
+Cs_Vendas;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Cod_comissionista_G1, tbl_rot_vendas.OptionOrcamento_venda, tbl_rot_vendas.DtValidadeOrcamento, tbl_ro
+Cs_Vendas_Dashboard;"SELECT tbl_rot_vendas.Cod_venda, tbl_cad_prodserv.Cod_ProdServ AS CodProd, tbl_cad_prodserv.Grupo_prodServ, [subgrupo_prodserv] & "" "" & [nome_prodserv"
+Cs_VendasAbaixoValor;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_cad_funcionarios.mat_funcionario AS [Matricula Vendedor], tbl_cad_funcionarios.Nome_f
+Cs_vendasDetalhadas;SELECT tbl_rot_vendasDetalhadas.Cod_VendasDet, tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.Cod_ProdServ, [tbl_cad_prodserv]![cod_prodserv] & 
+cs_vendasdetalhadas_Loterica;SELECT tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.subgrupo_prodserv, tbl_cad_prodserv.Grupo_prodServ, Sum(tbl_rot_vendasDetalhadas.Valor_uni
+Cs_vendasDetLoterica;"SELECT tbl_rot_vendasDetalhadas.Cod_VendasDet, tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.Cod_ProdServ, [cod_prodserv] & "" "" & [Nome_prodSer"
+Cs_vendasDetLoterica_BKP;"SELECT tbl_rot_vendasDetalhadas.Cod_VendasDet, tbl_rot_vendasDetalhadas.Cod_venda, tbl_cad_prodserv.Cod_ProdServ, [cod_prodserv] & "" "" & [Nome_prodSer"
+Cs_VendasDETSemVinculo;SELECT tbl_rot_vendasDetalhadas.Cod_VendasDet, tbl_rot_vendas.Cod_venda
+Cs_VendasDuplicadas;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.ID_Externo_Vendas
+Cs_vendasEstoque;SELECT tbl_cad_prodserv.Cod_ProdServ, IIf(Sum([Quantidade_VendasDet]),Sum([Quantidade_VendasDet]),0) AS VendasEstoque, tbl_rot_vendas.Cod_formaRetirad
+Cs_vendasEstoque_CurvaProd;SELECT tbl_cad_prodserv.Cod_ProdServ, IIf(Sum([Quantidade_VendasDet]),Sum([Quantidade_VendasDet]),0) AS VendasEstoque, tbl_rot_vendas.Cod_formaRetirad
+Cs_VendasPorFormaPagamento_Total;SELECT tbl_rot_vendas.Cod_venda, DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS DtFiltro, tbl_cad_clientes.Apelido_Cliente
+Cs_VendasPorPeriodo_FluxoCaixa;SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS Dt_Hr_vend, Sum(tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVenda
+Cs_VendasPorPeriodo_FluxoCaixaGrafico;SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS Dt_Hr_vend, Sum(tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVenda
+Cs_VendasTablet;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Cod_comissionista_G1, tbl_rot_vendas.DtValidadeOrcamento, tbl_rot_vendas.Cod_cliente, tbl_rot_vendas.D
+Cs_VendatotalFormaPagamento;SELECT tbl_rot_vendas.Cod_venda, Sum(Nz([Valor_FormaPagVendasDet],0)) AS TotalFaturado
+Cs_VerificaRegPonto;SELECT tbl_regponto.MatFuncionario_regPonto, Date()=DateSerial(Year([DtHr_regPonto]),Month([DtHr_regPonto]),Day([DtHr_regPonto])) AS TesteHoje, *
+Cs_VersaoBe;SELECT fncNumerarConsulta(Null) AS Seq, A.Tabela, A.Comando, A.Valor, A.TipoValor, A.VersaoBe, A.ContagemVersao
+Cs_VersaoBe_CriarRelac;SELECT fncNumerarConsulta(Null) AS Seq, A.TblPrimaria, A.Comando1, A.NomeRelac, A.Comando2, A.FK, A.Comando3, A.TblEstrangeira, A.PK, A.Comando4, A.Ve
+Cs_VersaoBe_CriarTbl;SELECT fncNumerarConsulta(null) AS Seq, A.Nometabela, A.VersaoBe
+cst_LancCaixa_Credito;SELECT tbl_rot_LancCaixa.Cod_LancCaixa, tbl_rot_LancCaixa.Tipo_LancCaixa, tbl_rot_LancCaixa.DtMovimento_LancCaixa, tbl_rot_LancCaixa.PlanoConta_LancCa
+cst_LancCaixa_Debito;SELECT tbl_rot_LancCaixa.Cod_LancCaixa, tbl_rot_LancCaixa.Tipo_LancCaixa, tbl_rot_LancCaixa.DtMovimento_LancCaixa, tbl_rot_LancCaixa.PlanoConta_LancCa
+Encontrar duplicatas para tbl_rot_vendas;SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.ID_Externo_Vendas
+EXCLUIR_Venda;DELETE DISTINCTROW tbl_rot_vendas.*, tbl_rot_vendasDetalhadas.*, tbl_rot_contasareceber.*, tbl_rot_ContasReceber_det.*, tbl_cad_formasPagamentoVENDASD
+Fila_Movestoque;SELECT tbl_rot_MovEstoque.CodVenda_RetiradaEst AS CodVenda, tbl_rot_MovEstoque.dtHrRetiradaEst, tbl_cad_clientes.NomeRazaoSocial_Cliente AS Cliente, t
+"Funcionário;Cliente";SELECT tbl_cad_TipoUsuarioAutEst.cod_Tipousuarioautest, tbl_cad_TipoUsuarioAutEst.filtro
+MODELO Cancelamento AGendamento;UPDATE tbl_Agendamento SET tbl_Agendamento.CancelarAgendamento = True, tbl_Agendamento.AutorizarCancelamento_Agendamento = [Formulários]![Frm_MenuPrin
+MovEstoque_LiberaProduto;SELECT tbl_rot_MovEstoque_Prod.CodMovEstoque AS CodMov, tbl_rot_MovEstoque.CodVenda_RetiradaEst AS CodVenda, tbl_rot_MovEstoque_Prod.CodProd_PME_ENTRA
+NFE_corpo;"SELECT Municípios.codIBGEuf AS ide_cUF, ""Venda"" AS ide_natOp, 0 AS ide_indPag, 55 AS ide_mod, tbl_rot_vendas.cod_venda AS ide_nNF, tbl_rot_vendas.Dt_H"
+ResumoCaixa_FormaPagamento;SELECT Cs_DetalhesFormaPagamento.Nome_FormaPagamento, Sum(Cs_DetalhesFormaPagamento.Valor_FormaPagVendasDet) AS Total, DateSerial(Year([cs_detalhesfor
+ResumoCaixa_FormaPagamento_Individual;SELECT Cs_DetalhesFormaPagamento.Nome_FormaPagamento, Sum(Cs_DetalhesFormaPagamento.Valor_FormaPagVendasDet) AS Total, DateSerial(Year([cs_detalhesfor
+SERIALSYS;SELECT Last(tbl_serialMensal.PasswordMes_Serial) AS ÚltimoDePasswordMes_Serial
+tbl_cad_tipo_prodserv;SELECT tbl_cad_grupo_prodserv.Grupo_prodServ
+tbl_rot_vendas Sem coincidentes tbl_rot_vendasDetalhadas;DELETE tbl_rot_vendasDetalhadas.*, tbl_rot_vendas.Cod_venda, tbl_rot_vendasDetalhadas.Cod_VendasDet
+TESTE_RegFinanceiro;INSERT INTO tbl_RegFinanceiro ( CodOrigem_regFinanc, Origem_regFinanc, DtHrCadastro_regFinanc, DtMovimentacao_regFinanc, Lancamento_regFinanc, Histori
+TMP_FluxoCaixa;SELECT DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS Dt_Hr_vend, Sum(tbl_cad_formasPagamentoVENDASDET.Valor_FormaPagVenda

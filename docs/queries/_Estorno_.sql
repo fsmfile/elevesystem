@@ -1,0 +1,3 @@
+SELECT tbl_cad_forma_retiradaEstoque.forma_retiradaEstoque, tbl_cad_forma_retiradaEstoque.cod_retiradaEstoque
+FROM tbl_cad_forma_retiradaEstoque
+WHERE (((tbl_cad_forma_retiradaEstoque.cod_retiradaEstoque)=7));

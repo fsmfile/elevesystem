@@ -1,0 +1,3 @@
+SELECT tbl_rot_contasareceber.Cod_contasAreceber, tbl_rot_contasareceber.DtVencimento_contasReceber, tbl_rot_contasareceber.ValorTotal_ContasReceber, tbl_rot_contasareceber.Parcelas_contasreceber, tbl_cad_clientes.Cod_cliente, tbl_rot_contasareceber.CodVenda_contasReceber, tbl_rot_contasareceber.Observacao_contasReceber, tbl_rot_contasareceber.Forma_pagamento_contaaPagar, tbl_rot_contasareceber.PlanoMensal, tbl_rot_contasareceber.UltimaVerificacaoPM, tbl_rot_contasareceber.ContasReceber_Ativo, tbl_rot_contasareceber.codPlanoContas
+FROM tbl_rot_contasareceber LEFT JOIN tbl_cad_clientes ON tbl_rot_contasareceber.CodCliente_contasReceber = tbl_cad_clientes.Cod_cliente
+WHERE (((tbl_rot_contasareceber.PlanoMensal)=Yes) AND ((tbl_rot_contasareceber.ContasReceber_Ativo)=Yes));

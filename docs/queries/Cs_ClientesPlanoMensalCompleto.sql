@@ -1,0 +1,8 @@
+SELECT [Categoria_PlanoContas] & " " & [Nome_PlanoContas] AS Plano, tbl_Prodserv_Promocao.CodPromocao, tbl_cad_clientes.Cod_cliente, "Titular" AS Tipo
+FROM ((tbl_cad_clientes LEFT JOIN tbl_rot_contasareceber ON tbl_cad_clientes.Cod_cliente = tbl_rot_contasareceber.CodCliente_contasReceber) LEFT JOIN tbl_cad_Planocontas ON tbl_rot_contasareceber.codPlanoContas = tbl_cad_Planocontas.codAut_PlanoContas) LEFT JOIN tbl_Prodserv_Promocao ON tbl_cad_Planocontas.codAut_PlanoContas = tbl_Prodserv_Promocao.CodPlanoContas_Promocao
+GROUP BY [Categoria_PlanoContas] & " " & [Nome_PlanoContas], tbl_Prodserv_Promocao.CodPromocao, tbl_cad_clientes.Cod_cliente, tbl_rot_contasareceber.ContasReceber_Ativo, "Titular"
+HAVING (((tbl_rot_contasareceber.ContasReceber_Ativo)=Yes));
+UNION ALL SELECT [Categoria_PlanoContas] & " " & [Nome_PlanoContas] AS Plano, tbl_Prodserv_Promocao.CodPromocao, tbl_cad_clientes.Cod_cliente, "Dependente" AS Tipo
+FROM tbl_cad_clientes LEFT JOIN (tbl_cad_clientes AS tbl_cad_clientes_1 LEFT JOIN ((tbl_rot_contasareceber LEFT JOIN tbl_cad_Planocontas ON tbl_rot_contasareceber.codPlanoContas = tbl_cad_Planocontas.codAut_PlanoContas) LEFT JOIN tbl_Prodserv_Promocao ON tbl_cad_Planocontas.codAut_PlanoContas = tbl_Prodserv_Promocao.CodPlanoContas_Promocao) ON tbl_cad_clientes_1.Cod_cliente = tbl_rot_contasareceber.CodCliente_contasReceber) ON tbl_cad_clientes.Vinculo_cliente = tbl_cad_clientes_1.Cod_cliente
+GROUP BY [Categoria_PlanoContas] & " " & [Nome_PlanoContas], tbl_Prodserv_Promocao.CodPromocao, tbl_cad_clientes.Cod_cliente, tbl_rot_contasareceber.ContasReceber_Ativo, "Dependente"
+HAVING (((tbl_rot_contasareceber.ContasReceber_Ativo)=Yes));

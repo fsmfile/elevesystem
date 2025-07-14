@@ -1,0 +1,3 @@
+SELECT TMP_ContasReceber_Saldo_Individual.ValorPago, TMP_ContasReceber_Saldo_Individual.Juros, TMP_ContasReceber_Saldo_Individual.Desconto, TMP_ContasReceber_Saldo_Individual.TotalValorPago, TMP_ContasReceber_Saldo_Individual.DataPag_ContasReceberDET, TMP_ContasReceber_Saldo_Individual.Nome_FormaPagamento, TMP_ContasReceber_Saldo_Individual.DescricaoPagCli_CR, TMP_ContasReceber_Saldo_Individual.Usuario
+FROM TMP_ContasReceber_Saldo_Individual
+WHERE (((TMP_ContasReceber_Saldo_Individual.DataPag_ContasReceberDET)=[Formulários]![frm_saldocaixa_individual]![txt_data]) AND ((TMP_ContasReceber_Saldo_Individual.Usuario)=[Formulários]![frm_saldocaixa_individual]![CxUsuario]));

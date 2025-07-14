@@ -1,0 +1,3 @@
+SELECT tbl_salario_funcionario.Mat_funcionario, Last(tbl_salario_funcionario.DtSalario_funcionario) AS DtSalario_funcionario, Sum(tbl_salario_funcionario.Salário) AS Salário
+FROM tbl_salario_funcionario
+GROUP BY tbl_salario_funcionario.Mat_funcionario;

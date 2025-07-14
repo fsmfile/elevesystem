@@ -1,0 +1,6 @@
+ClienteID,DataExpiracao,Status,Observacoes
+LPPNEUS,31/12/2025,ATIVO,Cliente regular
+TESTE,15/06/2025,EXPIRADO,Teste de validação
+CLIENTE001,28/02/2026,ATIVO,Novo cliente
+CLIENTE002,10/01/2025,EXPIRADO,Aguardando renovação
+CLIENTE003,15/08/2025,ATIVO,Licença anual 

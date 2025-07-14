@@ -1,0 +1,4 @@
+SELECT tbl_cad_funcionarios.mat_funcionario, tbl_cad_funcionarios.Nome_funcionario, tbl_cad_funcionarios.CPF_funcionario, [ID_EXTERNO_TIPOREGPONTO] & " " & [Nome_tiporegponto] AS TipoReg, DateSerial(Year([DtHr_regPonto]),Month([DtHr_regPonto]),Day([DtHr_regPonto])) AS Data, TimeSerial(Hour([DtHr_regPonto]),Minute([DtHr_regPonto]),Second([DtHr_regPonto])) AS Hora, tbl_regPonto.Tipo_RegPonto
+FROM (tbl_cad_funcionarios RIGHT JOIN tbl_regPonto ON tbl_cad_funcionarios.mat_funcionario = tbl_regPonto.MatFuncionario_regPonto) RIGHT JOIN tbl_TipoRegPonto ON tbl_regPonto.Tipo_RegPonto = tbl_TipoRegPonto.ID_Externo_Tiporegponto
+WHERE (((tbl_regPonto.Tipo_RegPonto)=2) AND ((tbl_cad_funcionarios.Ativo_funcionario)=Yes) AND ((tbl_TipoRegPonto.Ativo_Tiporegponto)=Yes))
+ORDER BY tbl_cad_funcionarios.Nome_funcionario, DateSerial(Year([DtHr_regPonto]),Month([DtHr_regPonto]),Day([DtHr_regPonto])), TimeSerial(Hour([DtHr_regPonto]),Minute([DtHr_regPonto]),Second([DtHr_regPonto]));

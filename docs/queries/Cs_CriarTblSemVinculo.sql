@@ -1,0 +1,2 @@
+SELECT Cs_VendasDetSemVinculo.Cod_venda INTO TMP_CodVendaSemVinculo
+FROM Cs_VendasDetSemVinculo;

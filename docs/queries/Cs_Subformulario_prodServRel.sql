@@ -1,0 +1,2 @@
+SELECT tbl_cad_produtoDetalhado.Cod_ProdutoDet, tbl_cad_produtoDetalhado.Cod_ProdServ, tbl_cad_produtoDetalhado.ProdRelacionado_produtoDet, tbl_cad_produtoDetalhado.Quantidade_ProdutoDet, tbl_cad_prodserv.custo_final_prodserv, tbl_cad_produtoDetalhado.Valor_ProdutoDet, [Quantidade_ProdutoDet]*[Valor_produtoDet] AS ValorTotalProdRel
+FROM tbl_cad_prodserv INNER JOIN tbl_cad_produtoDetalhado ON tbl_cad_prodserv.Cod_ProdServ = tbl_cad_produtoDetalhado.Cod_ProdServ;

@@ -1,0 +1,3 @@
+SELECT tbl_ConfigBasica.CodConfigBasica, tbl_ConfigBasica.Configuracao, tbl_ConfigBasica.Descricao, tbl_ConfigBasica_Permissoes.SimNao, tbl_ConfigBasica.CaminhoSaveExport
+FROM tbl_ConfigBasica LEFT JOIN tbl_ConfigBasica_Permissoes ON tbl_ConfigBasica.Configuracao = tbl_ConfigBasica_Permissoes.ConfVinculada
+ORDER BY tbl_ConfigBasica.CaminhoSaveExport;

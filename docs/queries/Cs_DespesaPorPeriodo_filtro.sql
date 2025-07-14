@@ -1,0 +1,4 @@
+SELECT DateSerial(Year([dtMovimento_LancCaixa]),Month([dtMovimento_LancCaixa]),Day([dtMovimento_LancCaixa])) AS Dt_Hr_vend, Sum(0) AS [Valor Entrada], Sum(tbl_rot_LancCaixa.Valor_LancCaixa) AS [Valor Saída], tbl_cad_formasPagamento.Nome_FormaPagamento AS [Forma de Pagamento], "Caixa" AS Origem, "Despesa" AS Tipo
+FROM (TMP_formasPagamento LEFT JOIN tbl_cad_formasPagamento ON TMP_formasPagamento.Cod_formasPagamento = tbl_cad_formasPagamento.Cod_formasPagamento) LEFT JOIN tbl_rot_LancCaixa ON tbl_cad_formasPagamento.Cod_formasPagamento = tbl_rot_LancCaixa.CodFormaPag_LancCaixa
+GROUP BY DateSerial(Year([dtMovimento_LancCaixa]),Month([dtMovimento_LancCaixa]),Day([dtMovimento_LancCaixa])), tbl_cad_formasPagamento.Nome_FormaPagamento, "Caixa", "Despesa", TMP_formasPagamento.Permitido_FormaPagamento, tbl_rot_LancCaixa.Tipo_LancCaixa
+HAVING (((TMP_formasPagamento.Permitido_FormaPagamento)=Yes) AND ((tbl_rot_LancCaixa.Tipo_LancCaixa)="Débito"));

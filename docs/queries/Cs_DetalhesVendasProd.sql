@@ -1,0 +1,4 @@
+SELECT tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendasDetalhadas.Cod_produto, Sum(tbl_rot_vendasDetalhadas.Quantidade_VendasDet) AS SomaDeQuantidade_VendasDet, Sum(tbl_rot_vendasDetalhadas.Valor_unitario_vendasDet) AS SomaDeValor_unitario_vendasDet, Sum([quantidade_vendasdet]*[Valor_unitario_vendasDet]) AS Total
+FROM (tbl_rot_vendas LEFT JOIN tbl_cad_formasPagamentoVENDASDET ON tbl_rot_vendas.Cod_venda = tbl_cad_formasPagamentoVENDASDET.Cod_Venda) LEFT JOIN tbl_rot_vendasDetalhadas ON tbl_rot_vendas.Cod_venda = tbl_rot_vendasDetalhadas.Cod_venda
+GROUP BY tbl_rot_vendas.Cod_venda, tbl_rot_vendas.Dt_Hr_venda, tbl_rot_vendasDetalhadas.Cod_produto, tbl_rot_vendas.Cod_formaRetiradaEstoque, tbl_rot_vendas.VendaFinalizada_vendas
+HAVING (((tbl_rot_vendas.Cod_formaRetiradaEstoque)=1) AND ((tbl_rot_vendas.VendaFinalizada_vendas)=Yes));

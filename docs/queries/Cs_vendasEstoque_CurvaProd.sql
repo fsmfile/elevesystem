@@ -1,0 +1,4 @@
+SELECT tbl_cad_prodserv.Cod_ProdServ, IIf(Sum([Quantidade_VendasDet]),Sum([Quantidade_VendasDet]),0) AS VendasEstoque, tbl_rot_vendas.Cod_formaRetiradaEstoque, DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])) AS DataVenda
+FROM (tbl_cad_prodserv LEFT JOIN tbl_rot_vendasDetalhadas ON tbl_cad_prodserv.Cod_ProdServ = tbl_rot_vendasDetalhadas.Cod_produto) LEFT JOIN tbl_rot_vendas ON tbl_rot_vendasDetalhadas.Cod_venda = tbl_rot_vendas.Cod_venda
+GROUP BY tbl_cad_prodserv.Cod_ProdServ, tbl_rot_vendas.Cod_formaRetiradaEstoque, DateSerial(Year([Dt_Hr_venda]),Month([Dt_Hr_venda]),Day([Dt_Hr_venda])), tbl_rot_vendas.VendaFinalizada_vendas, DLookUp("data_receitasprevistas","tbl_fluxo_ReceitasPrevistas")<[Dt_Hr_venda]
+HAVING (((tbl_rot_vendas.Cod_formaRetiradaEstoque)=1) AND ((tbl_rot_vendas.VendaFinalizada_vendas)=Yes) AND ((DLookUp("data_receitasprevistas","tbl_fluxo_ReceitasPrevistas")<[Dt_Hr_venda])=True));

@@ -1,0 +1,3 @@
+SELECT tbl_VendasDetKitProd_NRSerie.CodVendasDETKitProd_CVDKit AS CodOperacao, tbl_VendasDetKitProd_NRSerie.Cod_NrSerie_CVDKit AS CodCP, tbl_VendasDetKitProd_NRSerie.Observacao_CVDKit AS Usuario
+FROM tbl_VendasDetKitProd_NRSerie
+WHERE (((tbl_VendasDetKitProd_NRSerie.CodVendasDETKitProd_CVDKit)=1));

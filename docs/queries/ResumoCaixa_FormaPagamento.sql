@@ -1,0 +1,4 @@
+SELECT Cs_DetalhesFormaPagamento.Nome_FormaPagamento, Sum(Cs_DetalhesFormaPagamento.Valor_FormaPagVendasDet) AS Total, DateSerial(Year([cs_detalhesformapagamento]![Dt_Hr_venda]),Month([cs_detalhesformapagamento]![Dt_Hr_venda]),Day([cs_detalhesformapagamento]![Dt_Hr_venda])) AS DataFiltro
+FROM Cs_DetalhesFormaPagamento LEFT JOIN tbl_rot_vendas ON Cs_DetalhesFormaPagamento.Cod_venda = tbl_rot_vendas.Cod_venda
+GROUP BY Cs_DetalhesFormaPagamento.Nome_FormaPagamento, DateSerial(Year([cs_detalhesformapagamento]![Dt_Hr_venda]),Month([cs_detalhesformapagamento]![Dt_Hr_venda]),Day([cs_detalhesformapagamento]![Dt_Hr_venda]))
+HAVING (((DateSerial(Year([cs_detalhesformapagamento]![Dt_Hr_venda]),Month([cs_detalhesformapagamento]![Dt_Hr_venda]),Day([cs_detalhesformapagamento]![Dt_Hr_venda])))=[Formulários]![frm_saldocaixa_individual]![txt_data]));

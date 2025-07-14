@@ -1,0 +1,3 @@
+SELECT tbl_cad_grupo_prodserv.Grupo_prodServ
+FROM tbl_cad_grupo_prodserv
+GROUP BY tbl_cad_grupo_prodserv.Grupo_prodServ;

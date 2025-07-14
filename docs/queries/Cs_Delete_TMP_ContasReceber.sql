@@ -1,0 +1,2 @@
+DELETE TMP_ContasReceber_Saldo_Individual.*
+FROM TMP_ContasReceber_Saldo_Individual;

@@ -1,0 +1,8 @@
+digraph g {
+  rankdir=LR;
+  "MSysNavPaneGroupCategories" -> "MSysNavPaneGroups" [label="MSysNavPaneGroupCategoriesMSysNavPaneGroups"];
+  "MSysNavPaneGroups" -> "MSysNavPaneGroupToObjects" [label="MSysNavPaneGroupsMSysNavPaneGroupToObjects"];
+  "tbl_cad_formHiperlink" -> "tbl_processosDetalhados" [label="tbl_cad_formHiperlinktbl_processosDetalhados"];
+  "tbl_processosDetalhados" -> "tlb_processosDetalhados_PermissaoGrupos" [label="tbl_processosDetalhadostlb_processosDetalhados_PermissaoGrupo"];
+  "tbl_processos" -> "tbl_processosDetalhados" [label="tbl_processostbl_processosDetalhados"];
+}
