@@ -32,77 +32,89 @@ GITHUB_USER = "fsmfile"
 GITHUB_REPO = "elevesystem"
 GITHUB_BRANCH = "main"
 CONFIG_URL_BASE = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{GITHUB_BRANCH}/configs/"
-USED_SERIALS_URL_BASE = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{GITHUB_BRANCH}/used_serials/"
+
+# URL do Google Sheets para verificação de seriais
+GOOGLE_SHEETS_URL = "https://docs.google.com/spreadsheets/d/1krk27oPgtAsVHs3mmEBnlmXOk1O0Bws1UA4i2s65DfI/export?format=csv&gid=0"
 
 ICON_PATH = Path(__file__).parent / "ico" / "setup.ico"
 
 def verificar_serial_usado(serial: str) -> bool:
-    """Verifica se o serial já foi utilizado"""
+    """Verifica se o serial já foi utilizado consultando o Google Sheets"""
     serial = serial.strip().upper()
-    url = f"{USED_SERIALS_URL_BASE}{serial}.json"
+    
     try:
-        with urllib.request.urlopen(url) as resp:
-            if resp.status == 200:
-                return True  # Serial já foi usado
-            return False
+        print("🔍 Verificando serial na planilha...")
+        
+        # Acessa a planilha do Google Sheets
+        with urllib.request.urlopen(GOOGLE_SHEETS_URL) as resp:
+            if resp.status != 200:
+                raise Exception(f"Erro ao acessar planilha: HTTP {resp.status}")
+            
+            # Lê o conteúdo CSV
+            conteudo = resp.read().decode('utf-8')
+            linhas = conteudo.strip().split('\n')
+            
+            # Processa cada linha da planilha
+            for i, linha in enumerate(linhas):
+                if i == 0:  # Pula cabeçalho
+                    continue
+                    
+                # Divide a linha em colunas (CSV)
+                colunas = linha.split(',')
+                if len(colunas) >= 3:  # ClienteID, DataExpira, Serial_Utilizado
+                    cliente_id = colunas[0].strip().strip('"').upper()
+                    serial_utilizado = colunas[2].strip().strip('"').upper()
+                    
+                    # Verifica se é o serial procurado
+                    if cliente_id == serial:
+                        print(f"✅ Serial encontrado na planilha")
+                        print(f"   Cliente: {cliente_id}")
+                        print(f"   Status: {serial_utilizado}")
+                        
+                        # Verifica se já foi utilizado
+                        if serial_utilizado == "SIM":
+                            print("❌ Serial já está UTILIZADO")
+                            return True  # Serial já foi usado
+                        else:
+                            print("✅ Serial ainda DISPONÍVEL")
+                            return False  # Serial disponível
+            
+            # Serial não encontrado na planilha
+            print(f"❌ Serial {serial} não encontrado na planilha!")
+            raise Exception(f"Serial {serial} não está cadastrado na planilha de controle.")
+            
     except urllib.error.HTTPError as e:
         if e.code == 404:
-            return False  # Serial não foi usado ainda
-        raise Exception(f"Erro ao verificar serial: {e.code}")
+            raise Exception("Planilha de controle não encontrada. Verifique a configuração.")
+        else:
+            raise Exception(f"Erro ao acessar planilha: HTTP {e.code}")
     except urllib.error.URLError as e:
-        raise Exception("Falha de conexão ao verificar serial. Verifique sua internet.")
+        raise Exception("Falha de conexão. Verifique sua internet e tente novamente.")
     except Exception as e:
-        raise Exception(f"Erro inesperado ao verificar serial: {e}")
+        if "não está cadastrado" in str(e):
+            raise  # Re-propaga erro específico
+        else:
+            raise Exception(f"Erro ao verificar serial na planilha: {e}")
 
 def marcar_serial_como_usado(serial: str):
-    """Marca o serial como usado criando um arquivo JSON no GitHub"""
-    if not GITHUB_TOKEN:
-        # Salva localmente como alternativa
-        used_serials_dir = Path(__file__).parent / "used_serials"
-        used_serials_dir.mkdir(exist_ok=True)
-        
-        local_file = used_serials_dir / f"{serial}.json"
-        with open(local_file, 'w', encoding='utf-8') as f:
-            json.dump({
-                "serial": serial,
-                "data_uso": dt.datetime.now().isoformat(),
-                "usado_por": "instalador_local"
-            }, f, indent=2, ensure_ascii=False)
-        
-        print(f"⚠️ Serial marcado como usado localmente em: {local_file}")
-        return
-
+    """Marca o serial como usado ATUALIZANDO A PLANILHA do Google Sheets"""
     serial = serial.strip().upper()
-    url = f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/contents/used_serials/{serial}.json"
     
-    dados_uso = {
-        "serial": serial,
-        "data_uso": dt.datetime.now().isoformat(),
-        "usado_por": "instalador_oficial"
-    }
+    print("🔄 Marcando serial como usado na planilha...")
     
-    conteudo = json.dumps(dados_uso, indent=2, ensure_ascii=False)
-    payload = json.dumps({
-        "message": f"Serial {serial} marcado como usado",
-        "content": base64.b64encode(conteudo.encode()).decode(),
-        "branch": GITHUB_BRANCH
-    })
+    # NOTA: Por limitações da API do Google Sheets sem autenticação OAuth2,
+    # não é possível alterar a planilha diretamente via URL.
+    # A marcação deve ser feita MANUALMENTE na planilha ou via script separado.
     
-    req = urllib.request.Request(url, data=payload.encode(), method="PUT")
-    req.add_header("Authorization", f"token {GITHUB_TOKEN}")
-    req.add_header("Content-Type", "application/json")
-    req.add_header("User-Agent", "EleveSystem-Installer/1.0")
-    
-    try:
-        with urllib.request.urlopen(req) as resp:
-            if resp.status not in (200, 201):
-                raise Exception(f"Erro ao marcar serial como usado: {resp.status}")
-    except urllib.error.HTTPError as e:
-        raise Exception(f"Erro ao marcar serial como usado (HTTP {e.code}): {e.reason}")
-    except urllib.error.URLError as e:
-        raise Exception("Falha de conexão ao marcar serial como usado.")
-    except Exception as e:
-        raise Exception(f"Erro inesperado ao marcar serial como usado: {e}")
+    print("⚠️ IMPORTANTE:")
+    print(f"   O serial {serial} foi instalado com sucesso!")
+    print("   Para marcar como usado na planilha:")
+    print("   1. Acesse: https://docs.google.com/spreadsheets/d/1krk27oPgtAsVHs3mmEBnlmXOk1O0Bws1UA4i2s65DfI/")
+    print(f"   2. Encontre a linha do cliente {serial}")
+    print("   3. Altere a coluna 'Serial_Utilizado' de 'Não' para 'Sim'")
+    print("   4. Salve a planilha")
+    print()
+    print("   OU use o script: python marcar_serial_planilha.py SERIAL")
 
 def baixar_config_por_serial(serial: str) -> dict:
     serial = serial.strip().upper()  # Garante maiúsculo e sem espaços
