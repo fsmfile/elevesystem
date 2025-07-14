@@ -5,7 +5,7 @@ a = Analysis(
     ['setup_loja.py'],
     pathex=[],
     binaries=[],
-    datas=[('ico/setup.ico', 'ico')],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

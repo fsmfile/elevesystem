@@ -1,91 +1,110 @@
-# Eleve System Instalador - Versão 2.0
+# Changelog - Instalador Eleve System v2.0
 
-## 🚀 Nova Versão com Controle de Serial Único
+## 📅 Data: 14/07/2025
+## 🔄 Versão: 2.0
 
-**Data de Lançamento**: 14 de Janeiro de 2025  
-**Arquivo**: `setup_loja.exe`  
-**Tamanho**: ~19MB
+### ✨ Novas Funcionalidades
 
-## 🔒 Principal Novidade: Controle de Serial Único
+#### 🔒 Controle de Serial Único
+- **Verificação na Planilha Google**: O instalador agora verifica se o serial já foi utilizado consultando a planilha Google Sheets
+- **Bloqueio Automático**: Seriais já utilizados são bloqueados automaticamente
+- **Mensagens Informativas**: Feedback claro sobre o status do serial
 
-### O que mudou?
-- **Cada serial agora só pode ser usado uma única vez**
-- Sistema verifica automaticamente se o serial já foi utilizado
-- Bloqueio automático para serials duplicados
-- Rastreabilidade completa de uso
+#### 🎯 Sistema Inteligente de Instalação
+- **Detecção de Licença Existente**: Verifica se já existe uma licença válida no sistema
+- **Modo Atualização**: Se houver licença válida, oferece opção de atualizar apenas o sistema
+- **Instalação Completa**: Se não houver licença, faz instalação completa
 
-### Como funciona?
-1. ✅ Usuário digita o serial
-2. 🔍 Sistema verifica se já foi usado (GitHub)
-3. ❌ Se usado → Bloqueia instalação
-4. ✅ Se novo → Permite instalação
-5. 🔒 Marca serial como usado automaticamente
+#### 🛠️ Modo Desenvolvedor Aprimorado
+- **Atalho de Teclado**: `Ctrl + Shift + C` para acessar o modo desenvolvedor
+- **Senha de Segurança**: Senha `4865753` para autenticação
+- **Criação de Configurações**: Interface para criar novas configurações de cliente
+- **Upload Automático**: Salva automaticamente no GitHub
 
-## 📱 Interface Atualizada
+### 🔧 Melhorias Técnicas
 
-### Serial Novo (Permitido)
-```
-🔍 Verificando se o serial já foi utilizado...
-✅ Serial válido! Baixando configuração...
-[... instalação normal ...]
-🔒 Marcando serial como usado...
-✅ Instalação concluída com sucesso!
-```
+#### 📊 Integração com Google Sheets
+- **URL da Planilha**: `https://docs.google.com/spreadsheets/d/1krk27oPgtAsVHs3mmEBnlmXOk1O0Bws1UA4i2s65DfI/export?format=csv&gid=0`
+- **Estrutura da Planilha**: ClienteID, DataExpira, Serial_Utilizado
+- **Verificação em Tempo Real**: Consulta direta à planilha durante a instalação
 
-### Serial Usado (Bloqueado)
-```
-❌ Este serial (CLIENTE001) já foi utilizado!
+#### 🗄️ Melhorias no Banco de Dados
+- **Tabela de Licença Aprimorada**: Novos campos para controle de carência e validação
+- **Campos Adicionados**:
+  - `DataInicioCarencia`: Data de início do período de carência
+  - `DiasCarenciaUtilizados`: Quantidade de dias de carência utilizados
+  - `LicencaValida`: Status de validação da licença
 
-Cada serial pode ser usado apenas uma vez.
-Entre em contato com o suporte para obter um novo serial.
-```
+#### 🎨 Interface do Usuário
+- **Design Moderno**: Interface atualizada com ttkbootstrap
+- **Feedback Visual**: Indicadores de progresso e status
+- **Mensagens Claras**: Informações detalhadas sobre cada etapa
 
-## 🛡️ Benefícios de Segurança
+### 🐛 Correções
 
-- ✅ **Controle total**: Impossível reutilizar serials
-- ✅ **Prevenção de fraudes**: Sistema robusto de verificação
-- ✅ **Rastreabilidade**: Histórico completo de uso
-- ✅ **User Experience**: Mensagens claras e informativas
-- ✅ **Confiabilidade**: Funciona online e offline
+#### 🔧 Correções de Bugs
+- **Verificação de Serial**: Corrigido problema na validação de seriais
+- **Criação de Atalhos**: Melhorada a detecção de diretórios de desktop
+- **Tratamento de Erros**: Melhor tratamento de erros de conexão
 
-## 📊 Tecnologia Implementada
+#### 🔒 Segurança
+- **Validação de Token**: Verificação mais robusta do token do GitHub
+- **Controle de Acesso**: Melhor controle de permissões no modo desenvolvedor
 
-- **Verificação Online**: Busca no repositório GitHub
-- **Fallback Local**: Funciona mesmo sem internet
-- **Arquivo de Controle**: JSON com data/hora e origem
-- **API GitHub**: Upload automático dos controles
+### 📋 Requisitos do Sistema
 
-## 🔧 Compatibilidade
+#### 💻 Sistema Operacional
+- **Windows 10** ou superior
+- **Microsoft Access** (qualquer versão recente)
+- **Conexão com Internet** (para download de configurações)
 
-- ✅ **Windows 10/11**: Totalmente compatível
-- ✅ **Python**: Não necessário (executável independente)
-- ✅ **Internet**: Recomendada para verificação online
-- ✅ **Offline**: Funciona com verificação local
+#### 🔧 Dependências
+- **Python 3.13.1** (embutido no executável)
+- **Bibliotecas Incluídas**:
+  - pyodbc (conexão com banco)
+  - ttkbootstrap (interface)
+  - requests (requisições HTTP)
+  - python-dotenv (variáveis de ambiente)
 
-## 📋 Instruções de Uso
+### 📦 Distribuição
 
-1. **Execute o instalador**: `setup_loja.exe`
-2. **Digite o serial**: Fornecido pelo suporte
-3. **Aguarde verificação**: Sistema valida automaticamente
-4. **Instalação**: Se serial válido, instala normalmente
-5. **Conclusão**: Serial marcado como usado automaticamente
+#### 📁 Arquivos Incluídos
+- `setup_loja.exe` (20.3 MB) - Instalador principal
+- `setup.ico` - Ícone do instalador
+- `INSTRUCOES_INSTALADOR.md` - Instruções detalhadas
 
-## ⚠️ Importante para Distribuidores
+#### 🎯 Como Usar
+1. **Executar como Administrador**: `setup_loja.exe`
+2. **Inserir Serial**: Digite o serial fornecido pela FLM Sistemas
+3. **Aguardar Instalação**: O sistema fará todo o processo automaticamente
+4. **Verificar Atalho**: Novo atalho será criado no desktop
 
-- Cada serial agora tem **uso único**
-- Não reutilize serials já distribuídos
-- Entre em contato com suporte para novos serials
-- Sistema mantém histórico completo de uso
+### 🔄 Compatibilidade
 
-## 🆔 Identificação da Versão
+#### ✅ Compatível com
+- **Versões Anteriores**: Mantém compatibilidade com instalações existentes
+- **Configurações Existentes**: Preserva configurações de clientes já instalados
+- **Dados do Sistema**: Não afeta dados existentes no banco
 
-- **Versão**: 2.0
-- **Build**: 14/01/2025 17:00
-- **Funcionalidade**: Controle Serial Único
-- **Tamanho**: 19MB (otimizado)
+#### ⚠️ Observações
+- **Primeira Instalação**: Requer serial válido e não utilizado
+- **Reinstalação**: Pode ser feita com o mesmo serial
+- **Atualização**: Preserva licença existente
+
+### 📞 Suporte
+
+#### 🆘 Em Caso de Problemas
+- **Email**: suporte@flmsistemas.com.br
+- **WhatsApp**: (11) 99999-9999
+- **Horário**: Segunda a Sexta, 8h às 18h
+
+#### 📋 Informações Técnicas
+- **Desenvolvido por**: FLM Sistemas
+- **Versão Python**: 3.13.1
+- **Framework UI**: ttkbootstrap
+- **Arquitetura**: Cliente-Servidor com Access
 
 ---
 
-**Desenvolvido por**: FLM Sistemas  
-**Suporte**: Entre em contato via canais oficiais  
-**Status**: ✅ Pronto para distribuição 
+**FLM Sistemas - Soluções em Gestão Empresarial**  
+*Versão 2.0 - 14/07/2025* 

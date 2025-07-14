@@ -11,6 +11,10 @@ Recursos:
 • Modo Dev ativado com Ctrl+Shift+C e senha 4865753:
     - Permite criar novo JSON com formulário (Serial + campos de configuração)
     - Salva automaticamente em https://github.com/fsmfile/elevesystem/configs/
+• Sistema inteligente de atualização:
+    - Verifica se já existe licença válida no backend
+    - Se houver: mostra botão "Atualizar Sistema" (atualiza apenas frontend + atalho)
+    - Se não houver: mostra botão "Baixar Configuração e Instalar" (instalação completa)
 """
 
 import os, sys, json, base64, datetime as dt, urllib.request, shutil
@@ -81,26 +85,26 @@ def verificar_serial_usado(serial: str) -> bool:
             
             # Serial não encontrado na planilha
             print(f"❌ Serial {serial} não encontrado na planilha!")
-            raise Exception(f"Serial {serial} não está cadastrado na planilha de controle.")
+            raise Exception(f"Serial {serial} não está cadastrado no sistema de controle.")
             
     except urllib.error.HTTPError as e:
         if e.code == 404:
-            raise Exception("Planilha de controle não encontrada. Verifique a configuração.")
+            raise Exception("Sistema de controle não encontrado. Verifique a configuração.")
         else:
-            raise Exception(f"Erro ao acessar planilha: HTTP {e.code}")
+            raise Exception(f"Erro ao acessar sistema de controle: HTTP {e.code}")
     except urllib.error.URLError as e:
         raise Exception("Falha de conexão. Verifique sua internet e tente novamente.")
     except Exception as e:
         if "não está cadastrado" in str(e):
             raise  # Re-propaga erro específico
         else:
-            raise Exception(f"Erro ao verificar serial na planilha: {e}")
+            raise Exception(f"Erro ao verificar serial no sistema: {e}")
 
 def marcar_serial_como_usado(serial: str):
     """Marca o serial como usado ATUALIZANDO A PLANILHA do Google Sheets"""
     serial = serial.strip().upper()
     
-    print("🔄 Marcando serial como usado na planilha...")
+    print("🔄 Marcando serial como usado no sistema...")
     
     # NOTA: Por limitações da API do Google Sheets sem autenticação OAuth2,
     # não é possível alterar a planilha diretamente via URL.
@@ -108,11 +112,11 @@ def marcar_serial_como_usado(serial: str):
     
     print("⚠️ IMPORTANTE:")
     print(f"   O serial {serial} foi instalado com sucesso!")
-    print("   Para marcar como usado na planilha:")
-    print("   1. Acesse: https://docs.google.com/spreadsheets/d/1krk27oPgtAsVHs3mmEBnlmXOk1O0Bws1UA4i2s65DfI/")
+    print("   Para marcar como usado no sistema:")
+    print("   1. Acesse o painel administrativo")
     print(f"   2. Encontre a linha do cliente {serial}")
     print("   3. Altere a coluna 'Serial_Utilizado' de 'Não' para 'Sim'")
-    print("   4. Salve a planilha")
+    print("   4. Salve as alterações")
     print()
     print("   OU use o script: python marcar_serial_planilha.py SERIAL")
 
@@ -355,13 +359,93 @@ def upload_json_para_github(filename: str, data: dict):
 
 def abrir_modo_dev(root):
     dev_win = tk.Toplevel(root)
-    dev_win.title("Cadastrar novo cliente")
-    dev_win.geometry("560x460")
+    dev_win.title("Painel do Desenvolvedor - Eleve System")
+    dev_win.geometry("700x600")
     if ICON_PATH.exists():
         try: dev_win.iconbitmap(str(ICON_PATH))
         except: pass
 
-    serial_frame = ttk.Frame(dev_win)
+    # Notebook para abas
+    notebook = ttk.Notebook(dev_win)
+    notebook.pack(fill='both', expand=True, padx=10, pady=10)
+    
+    # ABA 1: Informações do Sistema
+    frame_info = ttk.Frame(notebook)
+    notebook.add(frame_info, text="📊 Informações do Sistema")
+    
+    # Informações técnicas detalhadas
+    info_text = tk.Text(frame_info, wrap='word', font=('Consolas', 9))
+    info_scroll = ttk.Scrollbar(frame_info, orient='vertical', command=info_text.yview)
+    info_text.configure(yscrollcommand=info_scroll.set)
+    info_text.pack(side='left', fill='both', expand=True)
+    info_scroll.pack(side='right', fill='y')
+    
+    # Coleta informações técnicas
+    info_licenca = verificar_licenca_existente()
+    info_sistema = []
+    
+    info_sistema.append("=== INFORMAÇÕES TÉCNICAS DO SISTEMA ===\n")
+    info_sistema.append(f"🕒 Data/Hora: {dt.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    info_sistema.append(f"💻 Sistema Operacional: {os.name}")
+    info_sistema.append(f"🐍 Python: {sys.version}")
+    info_sistema.append(f"📁 Diretório do Instalador: {Path(__file__).parent}")
+    info_sistema.append(f"🌐 Token GitHub Configurado: {'Sim' if GITHUB_TOKEN else 'Não'}")
+    info_sistema.append(f"🔗 Repositório: {GITHUB_USER}/{GITHUB_REPO}")
+    info_sistema.append(f"🌿 Branch: {GITHUB_BRANCH}")
+    
+    info_sistema.append("\n=== STATUS DA INSTALAÇÃO ===")
+    if info_licenca["tem_licenca"]:
+        info_sistema.append(f"✅ Status: Sistema INSTALADO")
+        info_sistema.append(f"👤 Cliente ID: {info_licenca['cliente_id']}")
+        info_sistema.append(f"💾 Backend: {info_licenca['caminho_backend']}")
+        info_sistema.append(f"🖥️ Frontend: {info_licenca['caminho_frontend']}")
+        
+        # Verifica atalho
+        atalho_existe = verificar_atalho_existe()
+        info_sistema.append(f"🔗 Atalho no Desktop: {'Sim' if atalho_existe else 'Não'}")
+        
+        # Informações detalhadas da licença
+        try:
+            backend_path = Path(info_licenca['caminho_backend'])
+            if backend_path.exists():
+                info_sistema.append(f"📊 Tamanho Backend: {backend_path.stat().st_size / 1024 / 1024:.2f} MB")
+                info_sistema.append(f"📅 Modificado em: {dt.datetime.fromtimestamp(backend_path.stat().st_mtime).strftime('%d/%m/%Y %H:%M:%S')}")
+        except:
+            pass
+            
+    else:
+        info_sistema.append(f"❌ Status: Sistema NÃO INSTALADO")
+        info_sistema.append(f"📝 Motivo: {info_licenca.get('erro', 'Não especificado')}")
+    
+    info_sistema.append("\n=== CONFIGURAÇÕES TÉCNICAS ===")
+    info_sistema.append(f"📂 Diretório Padrão: C:\\FLMSistemas")
+    info_sistema.append(f"🗄️ Nome Backend: FLMSistemas_be.accdb")
+    info_sistema.append(f"🖥️ Nome Frontend: FLMSistemas_automacao.accdr")
+    info_sistema.append(f"📋 Ícone: {ICON_PATH}")
+    
+    # Informações de conectividade
+    info_sistema.append("\n=== CONECTIVIDADE ===")
+    try:
+        import urllib.request
+        with urllib.request.urlopen("https://www.google.com", timeout=5) as response:
+            info_sistema.append("🌐 Internet: Conectado")
+    except:
+        info_sistema.append("🌐 Internet: Desconectado")
+    
+    try:
+        with urllib.request.urlopen(f"{CONFIG_URL_BASE}TESTE.json", timeout=5) as response:
+            info_sistema.append("☁️ GitHub: Acessível")
+    except:
+        info_sistema.append("☁️ GitHub: Inacessível")
+    
+    info_text.insert('1.0', '\n'.join(info_sistema))
+    info_text.config(state='disabled')
+    
+    # ABA 2: Cadastrar Cliente
+    frame_cadastro = ttk.Frame(notebook)
+    notebook.add(frame_cadastro, text="➕ Cadastrar Cliente")
+
+    serial_frame = ttk.Frame(frame_cadastro)
     serial_frame.pack(pady=(10, 0))
     ttk.Label(serial_frame, text="SERIAL (nome do arquivo JSON)").pack(anchor='w')
     serial_entry = ttk.Entry(serial_frame, width=50)
@@ -379,12 +463,12 @@ def abrir_modo_dev(root):
         "SHORTCUT_NAME": "Eleve System.lnk"
     }
 
-    frame = ttk.Frame(dev_win, padding=10)
-    frame.pack(fill='both', expand=True)
+    frame_campos = ttk.Frame(frame_cadastro, padding=10)
+    frame_campos.pack(fill='both', expand=True)
     entradas = {}
     for i, (chave, val) in enumerate(campos.items()):
-        ttk.Label(frame, text=chave).grid(row=i, column=0, sticky='e', padx=6, pady=5)
-        ent = ttk.Entry(frame, width=45)
+        ttk.Label(frame_campos, text=chave).grid(row=i, column=0, sticky='e', padx=6, pady=5)
+        ent = ttk.Entry(frame_campos, width=45)
         ent.insert(0, val)
         ent.grid(row=i, column=1, pady=5)
         entradas[chave] = ent
@@ -416,7 +500,7 @@ def abrir_modo_dev(root):
             else:
                 messagebox.showerror("Erro", error_msg)
 
-    ttk.Button(dev_win, text="Salvar no GitHub", command=salvar).pack(pady=15)
+    ttk.Button(frame_cadastro, text="💾 Salvar no GitHub", command=salvar).pack(pady=15)
 
 
 def instalar(config: dict, label: tk.Label, btn: ttk.Button, serial: str):
@@ -497,12 +581,160 @@ def instalar(config: dict, label: tk.Label, btn: ttk.Button, serial: str):
     finally:
         btn.config(state='normal')
 
+def verificar_licenca_existente(install_dir: str = "C:\\FLMSistemas", backend_name: str = "FLMSistemas_be.accdb", password: str = "Ca486575@") -> dict:
+    """Verifica se existe licença válida no backend e retorna informações"""
+    resultado = {
+        "tem_licenca": False,
+        "cliente_id": None,
+        "caminho_backend": None,
+        "caminho_frontend": None,
+        "erro": None
+    }
+    
+    try:
+        # Verifica se o diretório existe
+        pasta = Path(install_dir)
+        if not pasta.exists():
+            resultado["erro"] = "Diretório de instalação não encontrado"
+            return resultado
+        
+        # Verifica se o backend existe
+        backend_path = pasta / backend_name
+        if not backend_path.exists():
+            resultado["erro"] = "Backend não encontrado"
+            return resultado
+        
+        resultado["caminho_backend"] = str(backend_path)
+        resultado["caminho_frontend"] = str(pasta / "FLMSistemas_automacao.accdr")
+        
+        # Tenta conectar ao backend
+        try:
+            conn = connect_access(backend_path, password)
+        except Exception as e:
+            resultado["erro"] = f"Erro ao conectar backend: {str(e)}"
+            return resultado
+        
+        # Verifica se a tabela de licença existe e tem dados
+        cur = conn.cursor()
+        try:
+            cur.execute("SELECT ClienteID, LicencaValida FROM tblLicencaLocal")
+            rows = cur.fetchall()
+            
+            if rows:
+                for row in rows:
+                    cliente_id = row[0]
+                    licenca_valida = row[1] if len(row) > 1 else True
+                    
+                    if cliente_id and str(cliente_id).strip() and cliente_id.upper() != "DESCONHECIDO":
+                        resultado["tem_licenca"] = True
+                        resultado["cliente_id"] = cliente_id
+                        break
+            
+        except Exception as e:
+            # Tabela não existe ou erro ao acessar
+            resultado["erro"] = "Tabela de licença não encontrada ou inacessível"
+        finally:
+            cur.close()
+            conn.close()
+        
+        return resultado
+        
+    except Exception as e:
+        resultado["erro"] = f"Erro geral: {str(e)}"
+        return resultado
+
+def verificar_atalho_existe(nome_atalho: str = "Eleve System.lnk") -> bool:
+    """Verifica se o atalho já existe no desktop"""
+    try:
+        desktop_locations = [
+            Path(os.path.join(os.environ['USERPROFILE'], 'Desktop')),
+            Path(os.path.join(os.environ['PUBLIC'], 'Desktop')),
+            Path("C:\\Users\\Public\\Desktop")
+        ]
+        
+        for desktop in desktop_locations:
+            if desktop.exists():
+                atalho = desktop / nome_atalho
+                if atalho.exists():
+                    return True
+        
+        return False
+    except:
+        return False
+
+def atualizar_sistema_sem_serial(label: tk.Label, btn: ttk.Button, info_licenca: dict):
+    """Atualiza o sistema usando as configurações do cliente já licenciado"""
+    try:
+        btn.config(state='disabled')
+        
+        # Busca configuração baseada no cliente já instalado
+        cliente_id = info_licenca['cliente_id']
+        progresso = [f"🔄 Atualizando sistema para: {cliente_id}"]
+        label.config(fg='blue', text="\n".join(progresso))
+        label.update()
+        
+        try:
+            config = baixar_config_por_serial(cliente_id)
+        except Exception as e:
+            # Se não conseguir baixar config do cliente atual, usa configuração padrão
+            progresso.append("⚠️ Usando configuração padrão para atualização")
+            config = {
+                'CLIENT_ID': cliente_id,
+                'INSTALL_DIR': 'C:\\FLMSistemas',
+                'FRONTEND_NAME': 'FLMSistemas_automacao.accdr',
+                'FRONTEND_URL': 'https://github.com/fsmfile/elevesystem/raw/main/FrontEnd/FLMSistemas_automacao.accdr',
+                'SHORTCUT_NAME': 'Eleve System.lnk'
+            }
+        
+        # Caminho do frontend
+        frontend_path = Path(info_licenca['caminho_frontend'])
+        
+        # Remove frontend antigo se existir
+        if frontend_path.exists():
+            try:
+                frontend_path.unlink()
+                progresso.append("✔ Frontend antigo removido")
+            except Exception as e:
+                progresso.append(f"⚠️ Aviso: Não foi possível remover frontend antigo")
+        
+        # Baixa novo frontend
+        label.config(text="\n".join(progresso + ["📥 Baixando atualização..."]))
+        label.update()
+        
+        download_with_progress(config['FRONTEND_URL'], frontend_path, label, force=True)
+        progresso.append("✔ Sistema atualizado")
+        
+        # Verifica se precisa criar atalho
+        if not verificar_atalho_existe(config.get('SHORTCUT_NAME', 'Eleve System.lnk')):
+            progresso.append("🔗 Criando atalho...")
+            label.config(text="\n".join(progresso))
+            label.update()
+            
+            try:
+                criar_atalho(frontend_path, config.get('SHORTCUT_NAME', 'Eleve System.lnk'))
+                progresso.append("✔ Atalho criado")
+            except Exception as e:
+                progresso.append(f"⚠️ Atalho não criado")
+        else:
+            progresso.append("✔ Atalho verificado")
+        
+        # Configura local confiável (caso não esteja configurado)
+        add_trusted_location(frontend_path.parent)
+        progresso.append("✔ Configuração finalizada")
+        
+        label.config(fg='green', text="\n".join(progresso + ["✅ Atualização concluída com sucesso!"]))
+        
+    except Exception as e:
+        label.config(fg='red', text=f"❌ Erro na atualização: {e}")
+    finally:
+        btn.config(state='normal')
+
 
 def main_gui():
     style = Style("flatly")
     root = style.master
-    root.title("Eleve System – Instalador via ID")
-    root.geometry("560x300")
+    root.title("Eleve System – Instalador")
+    root.geometry("550x350")
     if ICON_PATH.exists():
         try: root.iconbitmap(str(ICON_PATH))
         except: pass
@@ -510,43 +742,93 @@ def main_gui():
     frame = ttk.Frame(root, padding=20)
     frame.pack(fill='both', expand=True)
 
-    ttk.Label(frame, text="Digite o SERIAL:", font=('Segoe UI', 11)).pack(pady=(0, 10))
-    entrada_id = ttk.Entry(frame, font=('Segoe UI', 12))
-    entrada_id.pack(ipady=4)
+    # Título principal
+    titulo = ttk.Label(frame, text="Eleve System", font=('Segoe UI', 18, 'bold'))
+    titulo.pack(pady=(0, 5))
+    
+    # Subtítulo
+    subtitulo = ttk.Label(frame, text="Sistema de Gestão Empresarial", font=('Segoe UI', 11))
+    subtitulo.pack(pady=(0, 30))
 
-    progresso = tk.Label(frame, text='', font=('Segoe UI', 10))
-    progresso.pack(pady=10)
+    # Verifica se já existe instalação
+    info_licenca = verificar_licenca_existente()
+    
+    if info_licenca["tem_licenca"]:
+        # MODO ATUALIZAÇÃO - Sistema já instalado com licença
+        status_frame = ttk.LabelFrame(frame, text="Status", padding=15)
+        status_frame.pack(fill='x', pady=(0, 20))
+        
+        ttk.Label(status_frame, text=f"✅ Sistema instalado e licenciado", 
+                 font=('Segoe UI', 12), foreground='green').pack()
+        ttk.Label(status_frame, text=f"Cliente: {info_licenca['cliente_id']}", 
+                 font=('Segoe UI', 10)).pack()
 
-    botao_instalar = ttk.Button(frame, text='Buscar Configuração e Instalar')
-    botao_instalar.pack(ipady=4, pady=(10, 0))
+        progresso = tk.Label(frame, text='', font=('Segoe UI', 10))
+        progresso.pack(pady=15)
 
-    def ao_clicar():
-        serial = entrada_id.get().strip()
-        if not serial:
-            messagebox.showerror("Erro", "Informe um SERIAL válido.")
-            return
-        try:
-            # Verifica se o serial já foi usado
-            progresso.config(fg='blue', text="🔍 Verificando se o serial já foi utilizado...")
-            progresso.update()
+        botao_atualizar = ttk.Button(frame, text='🔄 Atualizar Sistema', style='success.TButton')
+        botao_atualizar.pack(ipady=8, pady=(10, 0))
+
+        def ao_clicar_atualizar():
+            atualizar_sistema_sem_serial(progresso, botao_atualizar, info_licenca)
+
+        botao_atualizar.config(command=ao_clicar_atualizar)
+        
+    else:
+        # MODO INSTALAÇÃO - Sistema não instalado
+        if info_licenca["erro"]:
+            status_frame = ttk.LabelFrame(frame, text="Status", padding=15)
+            status_frame.pack(fill='x', pady=(0, 20))
             
-            if verificar_serial_usado(serial):
-                progresso.config(fg='red', text=f"❌ Este serial ({serial}) já foi utilizado!\n\nCada serial pode ser usado apenas uma vez.\nEntre em contato com o suporte para obter um novo serial.")
+            ttk.Label(status_frame, text="❌ Sistema não encontrado", 
+                     font=('Segoe UI', 12), foreground='orange').pack()
+            ttk.Label(status_frame, text="Pronto para nova instalação", 
+                     font=('Segoe UI', 10)).pack()
+        
+        ttk.Label(frame, text="Digite o SERIAL de instalação:", font=('Segoe UI', 12)).pack(pady=(10, 8))
+        entrada_id = ttk.Entry(frame, font=('Segoe UI', 13), justify='center')
+        entrada_id.pack(ipady=6, ipadx=10)
+
+        progresso = tk.Label(frame, text='', font=('Segoe UI', 10))
+        progresso.pack(pady=15)
+
+        botao_instalar = ttk.Button(frame, text='📦 Instalar Sistema', style='primary.TButton')
+        botao_instalar.pack(ipady=8, pady=(10, 0))
+
+        def ao_clicar_instalar():
+            serial = entrada_id.get().strip()
+            if not serial:
+                messagebox.showerror("Erro", "Informe um SERIAL válido.")
                 return
-            
-            # Se o serial não foi usado, continua com a instalação
-            progresso.config(fg='blue', text="✅ Serial válido! Baixando configuração...")
-            progresso.update()
-            
-            config = baixar_config_por_serial(serial)
-            instalar(config, progresso, botao_instalar, serial)
-        except Exception as e:
-            progresso.config(fg='red', text=f"❌ {e}")
+            try:
+                # Verifica se o serial já foi usado
+                progresso.config(fg='blue', text="🔍 Verificando serial...")
+                progresso.update()
+                
+                if verificar_serial_usado(serial):
+                    progresso.config(fg='red', text=f"❌ Este serial já foi utilizado!\n\nCada serial pode ser usado apenas uma vez.\nEntre em contato com o suporte para obter um novo serial.")
+                    return
+                
+                # Se o serial não foi usado, continua com a instalação
+                progresso.config(fg='blue', text="✅ Serial válido! Baixando configuração...")
+                progresso.update()
+                
+                config = baixar_config_por_serial(serial)
+                instalar(config, progresso, botao_instalar, serial)
+            except Exception as e:
+                progresso.config(fg='red', text=f"❌ {e}")
 
-    botao_instalar.config(command=ao_clicar)
+        botao_instalar.config(command=ao_clicar_instalar)
+
+    # Rodapé discreto
+    rodape_frame = ttk.Frame(frame)
+    rodape_frame.pack(side='bottom', fill='x', pady=(30, 0))
+    
+    ttk.Label(rodape_frame, text="Pressione Ctrl+Shift+C para acessar ferramentas avançadas", 
+             font=('Segoe UI', 8), foreground='lightgray').pack()
 
     def atalho_dev(event):
-        senha = simpledialog.askstring("Senha", "Digite a senha do desenvolvedor:", show="*")
+        senha = simpledialog.askstring("Acesso Desenvolvedor", "Digite a senha:", show="*")
         if senha == "4865753":
             abrir_modo_dev(root)
 
